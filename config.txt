@@ -1,4 +1,0 @@
-jdbcConnection=jwa-db.ct1n1hwlx13q.us-east-2.rds.amazonaws.com
-jdbcUserName=postgres
-jdbcPassword=p4ssw0rd
-jdbcDbName=ExpenseReimbursement
