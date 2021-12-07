@@ -74,6 +74,6 @@ class StatusDaoTest {
 
         ReimbursementStatus resultStatus = statusDao.updateStatus(updatedStatus);
 
-        assertEquals(updatedStatus, resultStatus);
+        assertEquals(updatedStatus.toString(), resultStatus.toString());
     }
 }

@@ -1,12 +1,9 @@
 package controllers;
 
 import dao.ReimbursementDao;
-import dao.ReimbursementDaoInterface;
 import io.javalin.http.Context;
 import models.Reimbursement;
 import service.ReimbursementService;
-
-import java.util.List;
 
 public class ReimbursementController {
     public ReimbursementService reimbService = new ReimbursementService(new ReimbursementDao());
@@ -27,7 +24,7 @@ public class ReimbursementController {
     }
 
     public void getAllTickets(Context context){
-        context.redirect("./HTML/test.html");
+        context.redirect("frontend/test.html");
     }
 
     public void getAllTicketsByType(Context context){

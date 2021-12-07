@@ -4,10 +4,8 @@ import models.ReimbursementStatus;
 import org.apache.log4j.Logger;
 
 import java.io.FileInputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -59,21 +57,77 @@ public class StatusDao implements StatusDaoInterface {
 
     @Override
     public ReimbursementStatus getStatus(int statusId) {
-        return null;
+        ReimbursementStatus status = null;
+        try(Connection conn = DriverManager.getConnection(url, userName, password)){
+            String sql = "SELECT * FROM ers_reimbursement_status WHERE reimb_status_id = ?;";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, statusId);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                status = new ReimbursementStatus(rs.getInt(1), rs.getString(2));
+            }
+            log.info("Status retrieved.");
+            return status;
+        }catch(Exception e){
+            log.error(e);
+        }
+        return status;
     }
 
     @Override
     public List<ReimbursementStatus> getAllStatuses() {
-        return null;
+        List<ReimbursementStatus> statuses = new ArrayList<>();
+        try(Connection conn = DriverManager.getConnection(url, userName, password)){
+            String sql = "SELECT * FROM ers_reimbursement_status;";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                statuses.add(new ReimbursementStatus(rs.getInt(1), rs.getString(2)));
+            }
+            log.info("Statuses retrieved.");
+            return statuses;
+        }catch(Exception e){
+            log.error(e);
+        }
+        return statuses;
     }
 
     @Override
     public boolean deleteStatus(int statusId) {
+        try(Connection conn = DriverManager.getConnection(url, userName, password)){
+            String sql = "DELETE FROM ers_reimbursement_status WHERE reimb_status_id = ?;";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, statusId);
+
+            boolean deleted = (ps.executeUpdate() > 0);
+            log.info("Status deleted: " + deleted);
+            return deleted;
+        }catch(Exception e){
+            log.error(e);
+        }
         return false;
     }
 
     @Override
     public ReimbursementStatus updateStatus(ReimbursementStatus status) {
+        try(Connection conn = DriverManager.getConnection(url, userName, password)){
+            String sql = "UPDATE ers_reimbursement_status SET reimb_status = ? WHERE reimb_status_id = ?;";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, status.getStatus());
+            ps.setInt(2, status.getId());
+
+            boolean updated = (ps.executeUpdate() > 0);
+            log.info("Status updated: " + updated);
+
+            return getStatus(status.getId());
+        }catch(Exception e){
+            log.error(e);
+        }
+
         return null;
     }
 }

@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -57,21 +59,81 @@ public class TypeDao implements TypeDaoInterface{
 
     @Override
     public ReimbursementType getType(int typeId) {
-        return null;
+        ReimbursementType type = null;
+        try(Connection conn = DriverManager.getConnection(url, userName, password)){
+            String sql = "SELECT * FROM ers_reimbursement_type WHERE reimb_type_id = ?;";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, typeId);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                type = new ReimbursementType(rs.getInt(1), rs.getString(2));
+            }
+
+            log.info("Type retrieved.");
+            return type;
+        }catch(Exception e){
+            log.error(e);
+        }
+        return type;
     }
 
     @Override
     public List<ReimbursementType> getAllTypes() {
-        return null;
+        List<ReimbursementType> types = new ArrayList<>();
+        try(Connection conn = DriverManager.getConnection(url, userName, password)){
+            String sql = "SELECT * FROM ers_reimbursement_type;";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                types.add(new ReimbursementType(rs.getInt(1), rs.getString(2)));
+            }
+
+            log.info("Types retrieved.");
+            return types;
+        }catch(Exception e){
+            log.error(e);
+        }
+        return types;
     }
 
     @Override
     public boolean deleteType(int typeId) {
+        try(Connection conn = DriverManager.getConnection(url, userName, password)){
+            String sql = "DELETE FROM ers_reimbursement_type WHERE reimb_type_id = ?;";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, typeId);
+
+            boolean deleted = (ps.executeUpdate() > 0);
+
+            log.info("Type deleted: " + deleted);
+            return deleted;
+        }catch(Exception e){
+            log.error(e);
+        }
         return false;
     }
 
     @Override
     public ReimbursementType updateType(ReimbursementType updatedType) {
-        return null;
+        ReimbursementType type = null;
+        try(Connection conn = DriverManager.getConnection(url, userName, password)){
+            String sql = "UPDATE ers_reimbursement_type SET reimb_type = ? WHERE reimb_type_id = ?;";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, updatedType.getType());
+            ps.setInt(2, updatedType.getId());
+
+            boolean updated = (ps.executeUpdate() > 0);
+            log.info("Type updated: " + updated);
+
+            type =  getType(updatedType.getId());
+            return type;
+        }catch(Exception e){
+            log.error(e);
+        }
+        return type;
     }
 }

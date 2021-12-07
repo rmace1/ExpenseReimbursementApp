@@ -13,6 +13,8 @@ public interface ReimbursementDaoInterface {
     List<Reimbursement> getAllTicketsByStatus(int statusId);
     boolean createNewTicket(Reimbursement newTicket);
     boolean deleteTicket(int ticketId);
+    boolean approveTicket(int ticketId, int resolverId);
+    boolean denyTicket(int ticketId, int resolverId);
     Reimbursement updateTicket(Reimbursement updatedTicket);
 
 }

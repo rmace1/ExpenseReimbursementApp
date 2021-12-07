@@ -39,7 +39,7 @@ class TypeDaoTest {
         typeDao.createType(type.getType());
         ReimbursementType type1 = typeDao.getType(1);
 
-        assertEquals(type, type1);
+        assertEquals(type.toString(), type1.toString());
     }
 
     @Test
@@ -47,8 +47,8 @@ class TypeDaoTest {
         ReimbursementType type = new ReimbursementType(1, "LODGING");
         ReimbursementType type1 = new ReimbursementType(2, "FOOD");
 
-        typeDao.createType(type.getType());
-        typeDao.createType(type1.getType());
+        Boolean created = typeDao.createType(type.getType());
+        created = typeDao.createType(type1.getType());
         List<ReimbursementType> types = typeDao.getAllTypes();
 
         assertEquals(types.size(), 2);
@@ -76,7 +76,7 @@ class TypeDaoTest {
         typeDao.createType(type.getType());
         ReimbursementType resultType = typeDao.updateType(updatedType);
 
-        assertEquals(updatedType, resultType);
+        assertEquals(updatedType.toString(), resultType.toString());
     }
 
 

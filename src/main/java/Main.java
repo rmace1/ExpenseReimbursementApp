@@ -5,8 +5,8 @@ import io.javalin.http.staticfiles.Location;
 public class Main {
     public static void main(String[] args) {
         Javalin server = Javalin.create(config -> {
-            //The directory is the location of the landing page.
-            config.addStaticFiles("/", Location.CLASSPATH);
+            //The directory is the location of the static files that are used.
+            config.addStaticFiles("/frontend", Location.CLASSPATH);
         }).start(9000);
 
        /* Reimbursement r = new Reimbursement();

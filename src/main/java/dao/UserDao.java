@@ -1,5 +1,6 @@
 package dao;
 
+import models.ReimbursementType;
 import models.User;
 import org.apache.log4j.Logger;
 
@@ -7,6 +8,7 @@ import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Properties;
 
 public class UserDao implements UserDaoInterface {
@@ -61,16 +63,67 @@ public class UserDao implements UserDaoInterface {
 
     @Override
     public User getUser(int userId) {
-        return null;
+        User user = null;
+        try(Connection conn = DriverManager.getConnection(url, userName, password)){
+            String sql = "SELECT * FROM ers_users WHERE ers_users_id = ?;";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, userId);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                user = new User(rs.getInt(1), rs.getString(2), rs.getString(3),
+                        rs.getString(4), rs.getString(5), rs.getString(6), rs.getInt(7));
+            }
+
+            log.info("User retrieved.");
+            return user;
+        }catch(Exception e){
+            log.error(e);
+        }
+        return user;
     }
 
     @Override
     public boolean deleteUser(int userId) {
+        try(Connection conn = DriverManager.getConnection(url, userName, password)){
+            String sql = "DELETE FROM ers_users WHERE ers_users_id = ?;";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, userId);
+
+            boolean deleted = (ps.executeUpdate() > 0);
+            log.info("User deleted: " + deleted);
+            return deleted;
+        }catch(Exception e){
+            log.error(e);
+        }
         return false;
     }
 
     @Override
     public User updateUser(User updatedUser) {
-        return null;
+        User user = null;
+        try(Connection conn = DriverManager.getConnection(url, userName, password)){
+            String sql = "UPDATE ers_users SET ers_username = ?, ers_password =?, user_first_name = ?," +
+                    "user_last_name = ?, user_email = ?, user_role_id = ? WHERE ers_users_id = ?;";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, updatedUser.getUserName());
+            ps.setString(2, updatedUser.getPassword());
+            ps.setString(3, updatedUser.getFirstName());
+            ps.setString(4, updatedUser.getLastName());
+            ps.setString(5, updatedUser.getEmail());
+            ps.setInt(6, updatedUser.getRoleId());
+            ps.setInt(7, updatedUser.getId());
+
+            boolean updated = (ps.executeUpdate() > 0);
+            log.info("User updated: " + updated);
+
+            user = getUser(updatedUser.getId());
+
+            return user;
+        }catch(Exception e){
+            log.error(e);
+        }
+        return user;
     }
 }

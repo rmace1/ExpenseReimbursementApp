@@ -12,10 +12,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserDaoTest {
     UserDaoInterface userDao;
+    RoleDaoInterface roleDao;
     @BeforeEach
     void setUp() {
         userDao = new UserDao(H2Util.url, H2Util.userName, H2Util.password);
+        roleDao = new RoleDao(H2Util.url, H2Util.userName, H2Util.password);
         H2Util.createAll();
+        roleDao.createRole("EMPLOYEE");
+
     }
 
     @AfterEach
@@ -36,11 +40,11 @@ class UserDaoTest {
     void getUser() {
         User user = new User(1,"rmace", "password","richard", "mace"
                 ,"rmace@revnet.net", 1);
-        userDao.createUser(user);
+        boolean created = userDao.createUser(user);
 
         User user2 = userDao.getUser(1);
 
-        assertEquals(user, user2);
+        assertEquals(user.toString(), user2.toString());
     }
 
     @Test
@@ -58,11 +62,11 @@ class UserDaoTest {
     void updateUser() {
         User user = new User(1,"rmace", "password","richard", "mace"
                 ,"rmace@revnet.net", 1);
-        userDao.createUser(user);
+        boolean created = userDao.createUser(user);
         User updatedUser = new User(1,"rmace", "password","richard", "mace"
                 ,"rmace@revature.net", 1);
         User resultUser = userDao.updateUser(updatedUser);
 
-        assertEquals(updatedUser, resultUser);
+        assertEquals(updatedUser.toString(), resultUser.toString());
     }
 }

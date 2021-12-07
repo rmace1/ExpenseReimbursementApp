@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.Timestamp;
+import java.util.Arrays;
 
 public class Reimbursement {
     private int id;
@@ -174,5 +175,23 @@ public class Reimbursement {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "Reimbursement{" +
+                "id=" + id +
+                ", amount=" + amount +
+                ", submitted=" + submitted +
+                ", resolved=" + resolved +
+                ", description='" + description + '\'' +
+                ", reciept=" + Arrays.toString(reciept) +
+                ", author=" + author +
+                ", resolver=" + resolver +
+                ", statusId=" + statusId +
+                ", status='" + status + '\'' +
+                ", typeId=" + typeId +
+                ", type='" + type + '\'' +
+                '}';
     }
 }
