@@ -17,17 +17,17 @@ public class H2Util {
     public static void createReimbursementTable(){
         try {
             Connection conn = DriverManager.getConnection(url, userName, password);
-            String sql = "CREATE TABLE IF NOT EXISTS ers_reimbursement(\n" +
+            String sql = "CREATE TABLE IF NOT EXISTS ERS_REIMBURSEMENT(\n" +
                     "REIMB_ID serial PRIMARY KEY,\n" +
                     "REIMB_AMOUNT DOUBLE PRECISION NOT NULL CHECK (reimb_amount > 0.00),\n" +
                     "REIMB_SUBMITTED TIMESTAMP NOT NULL DEFAULT now(),\n" +
                     "REIMB_RESOLVED TIMESTAMP DEFAULT NULL,\n" +
                     "REIMB_DESCRIPTION VARCHAR(250) DEFAULT '',\n" +
                     "REIMB_RECIEPT BYTEA DEFAULT NULL,\n" +
-                    "REIMB_AUTHOR INT NOT NULL REFERENCES ERS_USERS(ERS_USERS_ID),\n" +
-                    "REIMB_RESOLVER INT REFERENCES ERS_USERS(ERS_USERS_ID),\n" +
-                    "REIMB_STATUS_ID INT REFERENCES ERS_REIMBURSEMENT_STATUS(REIMB_STATUS_ID),\n" +
-                    "REIMB_TYPE_ID INT REFERENCES ERS_REIMBURSEMENT_TYPE(REIMB_TYPE_ID)\n" +
+                    "REIMB_AUTHOR INT NOT NULL REFERENCES ERS_USERS(ERS_USERS_ID) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
+                    "REIMB_RESOLVER INT REFERENCES ERS_USERS(ERS_USERS_ID) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
+                    "REIMB_STATUS_ID INT REFERENCES ERS_REIMBURSEMENT_STATUS(REIMB_STATUS_ID) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
+                    "REIMB_TYPE_ID INT REFERENCES ERS_REIMBURSEMENT_TYPE(REIMB_TYPE_ID) ON DELETE CASCADE ON UPDATE CASCADE\n" +
                     ");";
             PreparedStatement ps = conn.prepareStatement(sql);
 
@@ -50,7 +50,7 @@ public class H2Util {
                     "USER_FIRST_NAME VARCHAR(100) NOT NULL,\n" +
                     "USER_LAST_NAME VARCHAR(100) NOT NULL,\n" +
                     "USER_EMAIL VARCHAR(100) NOT NULL UNIQUE,\n" +
-                    "USER_ROLE_ID INT REFERENCES ERS_USER_ROLES(ERS_USER_ROLE_ID)\n" +
+                    "USER_ROLE_ID INT REFERENCES ERS_USER_ROLES(ERS_USER_ROLE_ID) ON DELETE CASCADE ON UPDATE CASCADE\n" +
                     ");";
             PreparedStatement ps = conn.prepareStatement(sql);
 

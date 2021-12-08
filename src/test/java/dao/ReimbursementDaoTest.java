@@ -119,7 +119,7 @@ class ReimbursementDaoTest {
         reimbDao.createNewTicket(newTicket4);
         List<Reimbursement> tickets = reimbDao.getAllTicketsByStatus(2);
 
-        assertEquals(tickets.size(), 3);
+        assertEquals(3, tickets.size());
     }
 
     @Test
@@ -155,6 +155,9 @@ class ReimbursementDaoTest {
         reimbDao.createNewTicket(newTicket);
         Reimbursement updatedTicket = new Reimbursement(2, 50.00, ts, 1, 1, 1, 1);
         updatedTicket.setResolved(ts);
+        updatedTicket.setType("LODGING");
+        updatedTicket.setStatus("PENDING");
+
         Reimbursement ticket = reimbDao.updateTicket(updatedTicket);
 
         //Have to set the submitted time due to creation statement not allowing a specified timestamp

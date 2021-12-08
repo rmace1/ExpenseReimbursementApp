@@ -77,12 +77,10 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
     public List<Reimbursement> getAllTickets() {
         List<Reimbursement> tickets = new ArrayList<>();
 
-        //TODO: join status and type tables to reimbursement
         try(Connection conn = DriverManager.getConnection(url, userName, password)){
             String sql = "SELECT er.*, ers.reimb_status, ert.reimb_type FROM ers_reimbursement er \n" +
                     "JOIN ers_reimbursement_status ers ON er.reimb_status_id = ers.reimb_status_id\n" +
-                    "JOIN ers_reimbursement_type ert ON er.reimb_type_id = ert.reimb_type_id \n" +
-                    "WHERE er.reimb_id = ?;";
+                    "JOIN ers_reimbursement_type ert ON er.reimb_type_id = ert.reimb_type_id;";
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
@@ -113,7 +111,7 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
             java.lang.String sql = "SELECT er.*, ers.reimb_status, ert.reimb_type FROM ers_reimbursement er \n" +
                     "JOIN ers_reimbursement_status ers ON er.reimb_status_id = ers.reimb_status_id\n" +
                     "JOIN ers_reimbursement_type ert ON er.reimb_type_id = ert.reimb_type_id \n" +
-                    "WHERE er.reimb_id = ?;";
+                    "WHERE er.reimb_author = ?;";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, userId);
 
@@ -145,7 +143,7 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
             java.lang.String sql = "SELECT er.*, ers.reimb_status, ert.reimb_type FROM ers_reimbursement er \n" +
                     "JOIN ers_reimbursement_status ers ON er.reimb_status_id = ers.reimb_status_id\n" +
                     "JOIN ers_reimbursement_type ert ON er.reimb_type_id = ert.reimb_type_id \n" +
-                    "WHERE er.reimb_id = ?;";
+                    "WHERE er.reimb_type_id = ?;";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, typeId);
 
@@ -177,7 +175,7 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
             java.lang.String sql = "SELECT er.*, ers.reimb_status, ert.reimb_type FROM ers_reimbursement er \n" +
                     "JOIN ers_reimbursement_status ers ON er.reimb_status_id = ers.reimb_status_id\n" +
                     "JOIN ers_reimbursement_type ert ON er.reimb_type_id = ert.reimb_type_id \n" +
-                    "WHERE er.reimb_id = ?;";
+                    "WHERE er.reimb_status_id = ?;";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, statusId);
 

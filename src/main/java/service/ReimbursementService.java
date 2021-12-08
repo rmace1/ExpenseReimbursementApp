@@ -14,6 +14,7 @@ public class ReimbursementService {
     }
 
     public boolean createNewReimbursementTicket(Reimbursement newTicket){
+        //needs to check if user/status/type id exist
         return reimbDao.createNewTicket(newTicket);
 
     }
