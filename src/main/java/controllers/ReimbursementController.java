@@ -1,12 +1,15 @@
 package controllers;
 
 import dao.ReimbursementDao;
+import dao.StatusDao;
+import dao.TypeDao;
+import dao.UserDao;
 import io.javalin.http.Context;
 import models.Reimbursement;
 import service.ReimbursementService;
 
 public class ReimbursementController {
-    public ReimbursementService reimbService = new ReimbursementService(new ReimbursementDao());
+    public ReimbursementService reimbService = new ReimbursementService(new ReimbursementDao(), new UserDao(), new TypeDao(), new StatusDao());
 
     public ReimbursementController(){
 

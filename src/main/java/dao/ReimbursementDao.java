@@ -43,7 +43,6 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
     public Reimbursement getOneTicket(int ticketId) {
         Reimbursement reimbursement = null;
 
-        //TODO: join status and type tables to reimbursement
         try (Connection conn = DriverManager.getConnection(url, userName, password)) {
             //id, amount, submitted timestamp, resolved timestamp, description, receipt, author, resolver, statusId, typeId
             java.lang.String sql = "SELECT er.*, ers.reimb_status, ert.reimb_type FROM ers_reimbursement er \n" +

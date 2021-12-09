@@ -1,22 +1,39 @@
 package service;
 
-import dao.ReimbursementDao;
-import dao.ReimbursementDaoInterface;
-import models.Reimbursement;
+import dao.*;
+import models.*;
 
 import java.util.List;
 
 public class ReimbursementService {
     ReimbursementDaoInterface reimbDao;
+    UserDaoInterface userDao;
+    TypeDaoInterface typeDao;
+    StatusDaoInterface statusDao;
 
-    public ReimbursementService(ReimbursementDaoInterface reimbDao) {
+    public ReimbursementService(ReimbursementDaoInterface reimbDao, UserDaoInterface userDao,
+                                TypeDaoInterface typeDao, StatusDaoInterface statusDao) {
         this.reimbDao = reimbDao;
+        this.userDao = userDao;
+        this.typeDao = typeDao;
+        this.statusDao = statusDao;
     }
 
     public boolean createNewReimbursementTicket(Reimbursement newTicket){
         //needs to check if user/status/type id exist
-        return reimbDao.createNewTicket(newTicket);
+        User user;
+        ReimbursementType type;
+        ReimbursementStatus status;
 
+        user = userDao.getUser(newTicket.getAuthor());
+        type = typeDao.getType(newTicket.getTypeId());
+        status = statusDao.getStatus(newTicket.getStatusId());
+
+        if(user == null || type == null || status == null){
+            return false;
+        }else {
+            return reimbDao.createNewTicket(newTicket);
+        }
     }
 
     public Reimbursement getOneTicket(int ticketId){
@@ -55,10 +72,22 @@ public class ReimbursementService {
     }
 
     public boolean approveTicket(int ticketId, int resolverId){
-        return reimbDao.approveTicket(ticketId, resolverId);
+        User user = userDao.getUser(resolverId);
+        if(user != null && user.getRole() == "MANAGER") {
+            return reimbDao.approveTicket(ticketId, resolverId);
+        }else{
+            //todo log error
+            return false;
+        }
     }
 
     public boolean denyTicket(int ticketId, int resolverId){
-        return reimbDao.denyTicket(ticketId, resolverId);
+        User user = userDao.getUser(resolverId);
+        if(user != null && user.getRole() == "MANAGER") {
+            return reimbDao.denyTicket(ticketId, resolverId);
+        }else{
+            //todo log error
+            return false;
+        }
     }
 }
