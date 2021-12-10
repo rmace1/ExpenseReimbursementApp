@@ -55,7 +55,7 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
 
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                reimbursement = new Reimbursement(rs.getInt(1), rs.getInt(2),
+                reimbursement = new Reimbursement(rs.getInt(1), rs.getDouble(2),
                         rs.getTimestamp(3), rs.getTimestamp(4),
                         rs.getString(5), rs.getBytes(6),
                         rs.getInt(7), rs.getInt(8),
@@ -79,7 +79,7 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
         try(Connection conn = DriverManager.getConnection(url, userName, password)){
             String sql = "SELECT er.*, ers.reimb_status, ert.reimb_type FROM ers_reimbursement er \n" +
                     "JOIN ers_reimbursement_status ers ON er.reimb_status_id = ers.reimb_status_id\n" +
-                    "JOIN ers_reimbursement_type ert ON er.reimb_type_id = ert.reimb_type_id;";
+                    "JOIN ers_reimbursement_type ert ON er.reimb_type_id = ert.reimb_type_id ORDER BY er.reimb_id ASC;";
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
@@ -110,7 +110,7 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
             java.lang.String sql = "SELECT er.*, ers.reimb_status, ert.reimb_type FROM ers_reimbursement er \n" +
                     "JOIN ers_reimbursement_status ers ON er.reimb_status_id = ers.reimb_status_id\n" +
                     "JOIN ers_reimbursement_type ert ON er.reimb_type_id = ert.reimb_type_id \n" +
-                    "WHERE er.reimb_author = ?;";
+                    "WHERE er.reimb_author = ? ORDER BY er.reimb_id ASC;";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, userId);
 
@@ -142,7 +142,7 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
             java.lang.String sql = "SELECT er.*, ers.reimb_status, ert.reimb_type FROM ers_reimbursement er \n" +
                     "JOIN ers_reimbursement_status ers ON er.reimb_status_id = ers.reimb_status_id\n" +
                     "JOIN ers_reimbursement_type ert ON er.reimb_type_id = ert.reimb_type_id \n" +
-                    "WHERE er.reimb_type_id = ?;";
+                    "WHERE er.reimb_type_id = ? ORDER BY er.reimb_id ASC;";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, typeId);
 
@@ -174,7 +174,7 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
             java.lang.String sql = "SELECT er.*, ers.reimb_status, ert.reimb_type FROM ers_reimbursement er \n" +
                     "JOIN ers_reimbursement_status ers ON er.reimb_status_id = ers.reimb_status_id\n" +
                     "JOIN ers_reimbursement_type ert ON er.reimb_type_id = ert.reimb_type_id \n" +
-                    "WHERE er.reimb_status_id = ?;";
+                    "WHERE er.reimb_status_id = ? ORDER BY er.reimb_id ASC;";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, statusId);
 
@@ -200,6 +200,7 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
 
     @Override
     public boolean createNewTicket(Reimbursement newTicket) {
+        //TODO: add description and receipt if it exists
         try (Connection conn = DriverManager.getConnection(url, userName, password)) {
             //id, amount, submitted timestamp, resolved timestamp, description, receipt, author, resolver, statusId, typeId
             java.lang.String sql = "INSERT INTO ers_reimbursement VALUES (DEFAULT, ?, DEFAULT, ?, ?, ?, ?, ?, ?, ?);";
@@ -209,7 +210,11 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
             ps.setString(3, "");// newTicket.getDescription());
             ps.setBytes(4, null);//newTicket.getReciept());
             ps.setInt(5, newTicket.getAuthor());
-            ps.setInt(6, newTicket.getResolver());
+            if(newTicket.getResolver() == 0){
+                ps.setNull(6, 0);
+            }else {
+                ps.setInt(6, newTicket.getResolver());
+            }
             ps.setInt(7, newTicket.getStatusId());
             ps.setInt(8, newTicket.getTypeId());
 
@@ -280,7 +285,7 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
 
     @Override
     public Reimbursement updateTicket(Reimbursement updatedTicket) {
-        Timestamp ts = new Timestamp(0);
+        Timestamp ts = new Timestamp(System.currentTimeMillis());
         Reimbursement ticket = null;
         try(Connection conn = DriverManager.getConnection(url, userName, password)){
             String sql = "UPDATE ers_reimbursement SET reimb_amount = ?, reimb_resolved = ?," +
@@ -288,10 +293,14 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
                     "reimb_type_id = ? WHERE reimb_id = ?;";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setDouble(1, updatedTicket.getAmount());
-            ps.setTimestamp(2, ts);
+            ps.setTimestamp(2, updatedTicket.getSubmitted());
             ps.setString(3, updatedTicket.getDescription());
             ps.setBytes(4, updatedTicket.getReciept());
-            ps.setInt(5, updatedTicket.getResolver());
+            if(updatedTicket.getResolver() == 0){
+                ps.setNull(5,0);
+            }else {
+                ps.setInt(5, updatedTicket.getResolver());
+            }
             ps.setInt(6, updatedTicket.getStatusId());
             ps.setInt(7, updatedTicket.getTypeId());
             ps.setInt(8, updatedTicket.getId());

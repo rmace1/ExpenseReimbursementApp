@@ -30,7 +30,7 @@ class ReimbursementServiceTest {
     @Test
     void createValidNewReimbursementTicket() {
         Timestamp ts = new Timestamp(0);
-        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1, 1);
+        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1);
 
         Mockito.when(userDao.getUser(ticket.getAuthor())).thenReturn(new User(1, "rmace", "password", "richard", "mace",
                 "rmace@revnet.net", 1));
@@ -44,7 +44,7 @@ class ReimbursementServiceTest {
     @Test
     void createInvalidNewReimbursementTicketUser() {
         Timestamp ts = new Timestamp(0);
-        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1, 1);
+        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1);
 
         //Mockito.when(userDao.getUser(ticket.getAuthor())).thenReturn(new User(1, "rmace", "password", "richard", "mace",
         //        "rmace@revnet.net", 1));
@@ -58,7 +58,7 @@ class ReimbursementServiceTest {
     @Test
     void createInvalidNewReimbursementTicketType() {
         Timestamp ts = new Timestamp(0);
-        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1, 1);
+        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1);
 
         Mockito.when(userDao.getUser(ticket.getAuthor())).thenReturn(new User(1, "rmace", "password", "richard", "mace",
                 "rmace@revnet.net", 1));
@@ -72,7 +72,7 @@ class ReimbursementServiceTest {
     @Test
     void createInvalidNewReimbursementTicketStatus() {
         Timestamp ts = new Timestamp(0);
-        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1, 1);
+        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1);
 
         Mockito.when(userDao.getUser(ticket.getAuthor())).thenReturn(new User(1, "rmace", "password", "richard", "mace",
                 "rmace@revnet.net", 1));
@@ -86,7 +86,7 @@ class ReimbursementServiceTest {
     @Test
     void getOneTicket() {
         Timestamp ts = new Timestamp(0);
-        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1, 1);
+        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1);
 
         Mockito.when(reimbDao.getOneTicket(ticket.getId())).thenReturn(ticket);
 
@@ -100,8 +100,8 @@ class ReimbursementServiceTest {
     void getAllTickets() {
         Timestamp ts = new Timestamp(0);
         List<Reimbursement> tickets = new ArrayList<>();
-        tickets.add( new Reimbursement(1, 5.00, ts, 1, 1, 1, 1));
-        tickets.add( new Reimbursement(2, 10.00, ts, 1, 1, 1, 1));
+        tickets.add( new Reimbursement(1, 5.00, ts, 1, 1, 1));
+        tickets.add( new Reimbursement(2, 10.00, ts, 1, 1, 1));
 
         Mockito.when(reimbDao.getAllTickets()).thenReturn(tickets);
 
@@ -115,8 +115,8 @@ class ReimbursementServiceTest {
     void getAllTicketsByAuthor() {
         Timestamp ts = new Timestamp(0);
         List<Reimbursement> tickets = new ArrayList<>();
-        tickets.add( new Reimbursement(1, 5.00, ts, 1, 1, 1, 1));
-        tickets.add( new Reimbursement(2, 10.00, ts, 1, 1, 2, 2));
+        tickets.add( new Reimbursement(1, 5.00, ts, 1, 1, 1));
+        tickets.add( new Reimbursement(2, 10.00, ts, 1, 2, 2));
 
         Mockito.when(reimbDao.getAllTicketsByUser(1)).thenReturn(tickets);
 
@@ -129,8 +129,8 @@ class ReimbursementServiceTest {
     void getAllTicketsByType() {
         Timestamp ts = new Timestamp(0);
         List<Reimbursement> tickets = new ArrayList<>();
-        tickets.add( new Reimbursement(1, 5.00, ts, 1, 1, 1, 1));
-        tickets.add( new Reimbursement(2, 10.00, ts, 2, 1, 2, 1));
+        tickets.add( new Reimbursement(1, 5.00, ts, 1, 1, 1));
+        tickets.add( new Reimbursement(2, 10.00, ts, 2, 2, 1));
 
         Mockito.when(reimbDao.getAllTicketsByType(1)).thenReturn(tickets);
 
@@ -143,8 +143,8 @@ class ReimbursementServiceTest {
     void getAllTicketsByStatus() {
         Timestamp ts = new Timestamp(0);
         List<Reimbursement> tickets = new ArrayList<>();
-        tickets.add( new Reimbursement(1, 5.00, ts, 1, 1, 1, 1));
-        tickets.add( new Reimbursement(2, 10.00, ts, 2, 1, 1, 2));
+        tickets.add( new Reimbursement(1, 5.00, ts, 1, 1, 1));
+        tickets.add( new Reimbursement(2, 10.00, ts, 2, 1, 2));
 
         Mockito.when(reimbDao.getAllTicketsByStatus(1)).thenReturn(tickets);
 
@@ -156,7 +156,7 @@ class ReimbursementServiceTest {
     @Test
     void deleteTicket() {
         Timestamp ts = new Timestamp(0);
-        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1, 1);
+        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1);
 
         Mockito.when(reimbDao.deleteTicket(ticket.getId())).thenReturn(true);
 
@@ -166,14 +166,14 @@ class ReimbursementServiceTest {
     @Test
     void updateTicket() {
         Timestamp ts = new Timestamp(0);
-        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1, 1);
+        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1);
 
     }
 
     @Test
     void approveTicket() {
         Timestamp ts = new Timestamp(0);
-        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1, 1);
+        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1);
         User user = new User(1, "rmace", "password", "richard", "mace",
                 "rmace@revnet.net", 1);
         user.setRole("MANAGER");
@@ -187,7 +187,7 @@ class ReimbursementServiceTest {
     @Test
     void approveTicketInvalidUser1() {
         Timestamp ts = new Timestamp(0);
-        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1, 1);
+        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1);
         User user = new User(1, "rmace", "password", "richard", "mace",
                 "rmace@revnet.net", 1);
         user.setRole("EMPLOYEE");
@@ -202,7 +202,7 @@ class ReimbursementServiceTest {
     @Test
     void approveTicketInvalidUser2() {
         Timestamp ts = new Timestamp(0);
-        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1, 1);
+        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1);
         User user = new User(1, "rmace", "password", "richard", "mace",
                 "rmace@revnet.net", 1);
         user.setRole("EMPLOYEE");
@@ -216,7 +216,7 @@ class ReimbursementServiceTest {
     @Test
     void denyTicket() {
         Timestamp ts = new Timestamp(0);
-        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1, 1);
+        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1);
         User user = new User(1, "rmace", "password", "richard", "mace",
                 "rmace@revnet.net", 1);
         user.setRole("MANAGER");
@@ -230,7 +230,7 @@ class ReimbursementServiceTest {
     @Test
     void denyTicketInvalidUser1() {
         Timestamp ts = new Timestamp(0);
-        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1, 1);
+        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1);
         User user = new User(1, "rmace", "password", "richard", "mace",
                 "rmace@revnet.net", 1000);
         user.setRole("EMPLOYEE");
@@ -245,7 +245,7 @@ class ReimbursementServiceTest {
     @Test
     void denyTicketInvalidUser2() {
         Timestamp ts = new Timestamp(0);
-        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1, 1);
+        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1);
         User user = new User(1, "rmace", "password", "richard", "mace",
                 "rmace@revnet.net", 1000);
         user.setRole("EMPLOYEE");

@@ -1,7 +1,6 @@
 package dao;
 
 import models.Reimbursement;
-import models.ReimbursementType;
 import models.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +34,8 @@ class ReimbursementDaoTest {
          created = userDao.createUser(new User(1, "rmace", "password", "richard", "mace",
                 "rmace@revnet.net", 1));
         Timestamp ts = new Timestamp(0);
-        Reimbursement newTicket = new Reimbursement(1, 5.00, ts, 1, 1, 1, 1);
+        Reimbursement newTicket = new Reimbursement(1, 5.00, ts, 1, 1, 1);
+        newTicket.setResolver(1);
         created = reimbDao.createNewTicket(newTicket);
     }
 
@@ -55,10 +55,12 @@ class ReimbursementDaoTest {
     @Test
     void getAllTickets() {
         Timestamp ts = new Timestamp(System.currentTimeMillis());
-        Reimbursement newTicket1 = new Reimbursement(2, 5.00, ts, 1, 1, 1, 1);
-        Reimbursement newTicket2 = new Reimbursement(3, 5.00, ts, 1, 1, 1, 1);
-        reimbDao.createNewTicket(newTicket1);
-        reimbDao.createNewTicket(newTicket2);
+        Reimbursement newTicket1 = new Reimbursement(2, 5.00, ts, 1, 1, 1);
+        newTicket1.setResolver(1);
+        Reimbursement newTicket2 = new Reimbursement(3, 5.00, ts, 1, 1, 1);
+        newTicket2.setResolver(1);
+        boolean created = reimbDao.createNewTicket(newTicket1);
+        created = reimbDao.createNewTicket(newTicket2);
         List<Reimbursement> tickets = reimbDao.getAllTickets();
 
         assertEquals(tickets.size(), 3);
@@ -73,10 +75,15 @@ class ReimbursementDaoTest {
         userDao.createUser(new User(4, "dmase", "password3", "Dick", "Mase",
                 "dmase@revnet.net", 1));
         Timestamp ts = new Timestamp(System.currentTimeMillis());
-        Reimbursement newTicket1 = new Reimbursement(2, 5.00, ts, 2, 1, 1, 1);
-        Reimbursement newTicket2 = new Reimbursement(3, 5.00, ts, 2, 1, 1, 1);
-        Reimbursement newTicket3 = new Reimbursement(4, 5.00, ts, 3, 1, 1, 1);
-        Reimbursement newTicket4 = new Reimbursement(5, 5.00, ts, 1, 1, 1, 1);
+        Reimbursement newTicket1 = new Reimbursement(2, 5.00, ts, 2, 1, 1);
+        Reimbursement newTicket2 = new Reimbursement(3, 5.00, ts, 2, 1, 1);
+        Reimbursement newTicket3 = new Reimbursement(4, 5.00, ts, 3, 1, 1);
+        Reimbursement newTicket4 = new Reimbursement(5, 5.00, ts, 1, 1, 1);
+        newTicket1.setResolver(1);
+        newTicket2.setResolver(1);
+        newTicket3.setResolver(1);
+        newTicket4.setResolver(1);
+
         reimbDao.createNewTicket(newTicket1);
         reimbDao.createNewTicket(newTicket2);
         reimbDao.createNewTicket(newTicket3);
@@ -91,10 +98,14 @@ class ReimbursementDaoTest {
         typeDao.createType("LODGING");
         typeDao.createType("TRAVEL");
         Timestamp ts = new Timestamp(System.currentTimeMillis());
-        Reimbursement newTicket1 = new Reimbursement(2, 5.00, ts, 1, 1, 1, 1);
-        Reimbursement newTicket2 = new Reimbursement(3, 5.00, ts, 1, 1, 1, 2);
-        Reimbursement newTicket3 = new Reimbursement(4, 5.00, ts, 1, 1, 1, 2);
-        Reimbursement newTicket4 = new Reimbursement(5, 5.00, ts, 1, 1, 1, 2);
+        Reimbursement newTicket1 = new Reimbursement(2, 5.00, ts, 1, 1, 1);
+        Reimbursement newTicket2 = new Reimbursement(3, 5.00, ts, 1, 1, 2);
+        Reimbursement newTicket3 = new Reimbursement(4, 5.00, ts, 1, 1, 2);
+        Reimbursement newTicket4 = new Reimbursement(5, 5.00, ts, 1, 1, 2);
+        newTicket1.setResolver(1);
+        newTicket2.setResolver(1);
+        newTicket3.setResolver(1);
+        newTicket4.setResolver(1);
         reimbDao.createNewTicket(newTicket1);
         reimbDao.createNewTicket(newTicket2);
         reimbDao.createNewTicket(newTicket3);
@@ -109,10 +120,14 @@ class ReimbursementDaoTest {
         statusDao.createStatus("APPROVED");
         statusDao.createStatus("REJECTED");
         Timestamp ts = new Timestamp(System.currentTimeMillis());
-        Reimbursement newTicket1 = new Reimbursement(2, 5.00, ts, 1, 1, 2, 1);
-        Reimbursement newTicket2 = new Reimbursement(3, 5.00, ts, 1, 1, 1, 1);
-        Reimbursement newTicket3 = new Reimbursement(4, 5.00, ts, 1, 1, 2, 1);
-        Reimbursement newTicket4 = new Reimbursement(5, 5.00, ts, 1, 1, 2, 1);
+        Reimbursement newTicket1 = new Reimbursement(2, 5.00, ts, 1, 2, 1);
+        Reimbursement newTicket2 = new Reimbursement(3, 5.00, ts, 1, 1, 1);
+        Reimbursement newTicket3 = new Reimbursement(4, 5.00, ts, 1, 2, 1);
+        Reimbursement newTicket4 = new Reimbursement(5, 5.00, ts, 1, 2, 1);
+        newTicket1.setResolver(1);
+        newTicket2.setResolver(1);
+        newTicket3.setResolver(1);
+        newTicket4.setResolver(1);
         reimbDao.createNewTicket(newTicket1);
         reimbDao.createNewTicket(newTicket2);
         reimbDao.createNewTicket(newTicket3);
@@ -125,7 +140,8 @@ class ReimbursementDaoTest {
     @Test
     void createNewTicket() {
         Timestamp ts = new Timestamp(System.currentTimeMillis());
-        Reimbursement newTicket1 = new Reimbursement(2, 5.00, ts, 1, 1, 1, 1);
+        Reimbursement newTicket1 = new Reimbursement(2, 5.00, ts, 1, 1, 1);
+        newTicket1.setResolver(1);
         boolean created = reimbDao.createNewTicket(newTicket1);
         List<Reimbursement> tickets = reimbDao.getAllTickets();
 
@@ -151,9 +167,12 @@ class ReimbursementDaoTest {
     @Test
     void updateTicket() {
         Timestamp ts = new Timestamp(0);
-        Reimbursement newTicket = new Reimbursement(2, 5.00, ts, 1, 1, 1, 1);
+        Reimbursement newTicket = new Reimbursement(2, 5.00, ts, 1, 1, 1);
+        newTicket.setResolver(1);
+
         reimbDao.createNewTicket(newTicket);
-        Reimbursement updatedTicket = new Reimbursement(2, 50.00, ts, 1, 1, 1, 1);
+        Reimbursement updatedTicket = new Reimbursement(2, 50.00, ts, 1, 1, 1);
+        updatedTicket.setResolver(1);
         updatedTicket.setResolved(ts);
         updatedTicket.setType("LODGING");
         updatedTicket.setStatus("PENDING");

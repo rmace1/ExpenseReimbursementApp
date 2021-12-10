@@ -15,6 +15,7 @@ public class StatusService {
 
     public StatusService(StatusDaoInterface statusDao){this.statusDao = statusDao;}
 
+    //todo: status has 10 character limit
     public boolean createStatus(String status){
         return statusDao.createStatus(status);
     }

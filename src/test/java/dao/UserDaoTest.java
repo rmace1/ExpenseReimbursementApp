@@ -84,6 +84,10 @@ class UserDaoTest {
 
         List<User> actualUsers = userDao.getAllUsers();
 
-        assertEquals(users.toString(), actualUsers.toString());
+        //the order returned is ascending by ID so the list order will be reversed
+        assertEquals(users.get(0).toString(), actualUsers.get(1).toString());
+        assertEquals(users.get(1).toString(), actualUsers.get(0).toString());
+        assertEquals(users.size(), actualUsers.size());
+
     }
 }

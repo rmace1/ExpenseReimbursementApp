@@ -20,7 +20,7 @@ public class UserService {
         this.roleDao = roleDao;
     }
 
-    //needs UserRole check
+    //todo: character limit username (50), password(50 if not encrypted), first/last name (100), email(100)
     public boolean createUser(User user) {
         UserRole role = roleDao.getRole(user.getRoleId());
         if( role != null) {

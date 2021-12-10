@@ -18,7 +18,7 @@ public class UserDao implements UserDaoInterface {
     private java.lang.String url;
     private java.lang.String userName;
     private java.lang.String password;
-    Logger log = Logger.getLogger(ReimbursementDao.class);
+    Logger log = Logger.getLogger(UserDao.class);
 
     public UserDao(){
         Properties prop = new Properties();
@@ -90,7 +90,7 @@ public class UserDao implements UserDaoInterface {
     public List<User> getAllUsers(){
         List<User> users = new ArrayList<>();
         try(Connection conn = DriverManager.getConnection(url, userName, password)){
-            String sql = "SELECT * FROM ers_users;";
+            String sql = "SELECT * FROM ers_users ORDER BY ers_users_id DESC;";
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();

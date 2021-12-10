@@ -23,6 +23,7 @@ public class ReimbursementService {
         this.statusDao = statusDao;
     }
 
+    //TODO: description has 250 character limit
     public boolean createNewReimbursementTicket(Reimbursement newTicket){
         //needs to check if user/status/type id exist
         User user;
@@ -50,34 +51,48 @@ public class ReimbursementService {
         return reimbDao.getAllTickets();
     }
 
+    //todo: add in user validation
     public List<Reimbursement> getAllTicketsByUser(int userId){
 
         return reimbDao.getAllTicketsByUser(userId);
     }
 
+    //todo: add in type validation
     public List<Reimbursement> getAllTicketsByType(int typeId){
 
         return reimbDao.getAllTicketsByType(typeId);
     }
 
+    //todo: add in status validation
     public List<Reimbursement> getAllTicketsByStatus(int statusId){
 
         return reimbDao.getAllTicketsByStatus(statusId);
     }
 
+    //todo: check if ticket is real
     public boolean deleteTicket(int ticketId){
 
         return reimbDao.deleteTicket(ticketId);
     }
 
+    //todo: check if ticket is real
     public Reimbursement updateTicket(Reimbursement updatedTicket){
+        Reimbursement ticket = getOneTicket(updatedTicket.getId());
+        if(ticket == null){
+            return null;
+        }
 
-        return reimbDao.updateTicket(updatedTicket);
+        if(updatedTicket.getAmount() > 0.00){ticket.setAmount(updatedTicket.getAmount());}
+        if(updatedTicket.getStatusId() > 0){ticket.setStatusId(updatedTicket.getStatusId());}
+        if(updatedTicket.getTypeId() > 0){ticket.setTypeId(updatedTicket.getTypeId());}
+
+        return reimbDao.updateTicket(ticket);
     }
 
+    //todo: check if ticket is real
     public boolean approveTicket(int ticketId, int resolverId){
         User user = userDao.getUser(resolverId);
-        if(user != null && user.getRole() == "MANAGER") {
+        if(user != null){// && user.getRole() == "MANAGER") {
             log.info("Ticket: " + ticketId + " approved by userID: " + resolverId);
             return reimbDao.approveTicket(ticketId, resolverId);
         }else{
@@ -86,9 +101,10 @@ public class ReimbursementService {
         }
     }
 
+    //todo: check if ticket is real
     public boolean denyTicket(int ticketId, int resolverId){
         User user = userDao.getUser(resolverId);
-        if(user != null && user.getRole() == "MANAGER") {
+        if(user != null){// && user.getRole() == "MANAGER") {
             log.info("Ticket: " + ticketId + " denied by userID: " + resolverId);
             return reimbDao.denyTicket(ticketId, resolverId);
         }else{

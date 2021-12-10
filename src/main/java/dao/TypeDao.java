@@ -17,7 +17,7 @@ public class TypeDao implements TypeDaoInterface{
     private java.lang.String url;
     private java.lang.String userName;
     private java.lang.String password;
-    Logger log = Logger.getLogger(ReimbursementDao.class);
+    Logger log = Logger.getLogger(TypeDao.class);
 
     public TypeDao(){
         Properties prop = new Properties();
@@ -83,7 +83,7 @@ public class TypeDao implements TypeDaoInterface{
     public List<ReimbursementType> getAllTypes() {
         List<ReimbursementType> types = new ArrayList<>();
         try(Connection conn = DriverManager.getConnection(url, userName, password)){
-            String sql = "SELECT * FROM ers_reimbursement_type;";
+            String sql = "SELECT * FROM ers_reimbursement_type ORDER BY reimb_type_id ASC;";
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();

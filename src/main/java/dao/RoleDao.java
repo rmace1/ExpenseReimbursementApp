@@ -18,7 +18,7 @@ public class RoleDao implements RoleDaoInterface{
     private java.lang.String url;
     private java.lang.String userName;
     private java.lang.String password;
-    Logger log = Logger.getLogger(ReimbursementDao.class);
+    Logger log = Logger.getLogger(RoleDao.class);
 
     public RoleDao(){
         Properties prop = new Properties();
@@ -84,7 +84,7 @@ public class RoleDao implements RoleDaoInterface{
     public List<UserRole> getRoles() {
         List<UserRole> roles = new ArrayList<>();
         try(Connection conn = DriverManager.getConnection(url, userName, password)){
-            String sql = "SELECT * FROM ers_user_roles;";
+            String sql = "SELECT * FROM ers_user_roles ORDER BY ers_user_role_id ASC;";
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();

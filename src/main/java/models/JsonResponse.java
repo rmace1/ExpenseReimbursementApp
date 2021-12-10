@@ -5,6 +5,14 @@ public class JsonResponse {
     private String message;
     private Boolean successful;
 
+    public JsonResponse() {
+    }
+
+    public JsonResponse(Object object, String message, Boolean successful) {
+        this.object = object;
+        this.message = message;
+        this.successful = successful;
+    }
 
     public Object getObject() {
         return object;

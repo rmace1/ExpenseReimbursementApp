@@ -15,7 +15,7 @@ public class StatusDao implements StatusDaoInterface {
     private java.lang.String url;
     private java.lang.String userName;
     private java.lang.String password;
-    Logger log = Logger.getLogger(ReimbursementDao.class);
+    Logger log = Logger.getLogger(StatusDao.class);
 
     public StatusDao(){
         Properties prop = new Properties();
@@ -80,7 +80,7 @@ public class StatusDao implements StatusDaoInterface {
     public List<ReimbursementStatus> getAllStatuses() {
         List<ReimbursementStatus> statuses = new ArrayList<>();
         try(Connection conn = DriverManager.getConnection(url, userName, password)){
-            String sql = "SELECT * FROM ers_reimbursement_status;";
+            String sql = "SELECT * FROM ers_reimbursement_status ORDER BY reimb_status_id ASC;";
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();

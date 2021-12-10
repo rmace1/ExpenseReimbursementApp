@@ -11,16 +11,16 @@ import java.util.Arrays;
 
 public class Reimbursement {
     private int id;
-    private double amount;
-    private Timestamp submitted;
+    private double amount; //required
+    private Timestamp submitted; //required
     private Timestamp resolved;
     private String description;
     private byte[] reciept;
-    private int author;
+    private int author; //required
     private int resolver;
-    private int statusId;
+    private int statusId; //required
     private String status;
-    private int typeId;
+    private int typeId; //required
     private String type;
 
 
@@ -29,12 +29,11 @@ public class Reimbursement {
     }
 
     public Reimbursement(int id, double amount, Timestamp submitted,
-                         int author, int resolver, int statusId, int typeId) {
+                         int author, int statusId, int typeId) {
         this.id = id;
         this.amount = amount;
         this.submitted = submitted;
         this.author = author;
-        this.resolver = resolver;
         this.statusId = statusId;
         this.typeId = typeId;
     }

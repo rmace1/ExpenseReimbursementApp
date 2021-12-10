@@ -17,6 +17,7 @@ public class TypeService {
         this.typeDao = typeDao;
     }
 
+    //todo: status has 10 character limit
     public boolean createType(String type) {
         return typeDao.createType(type);
     }

@@ -11,6 +11,7 @@ public class RoleService {
     public RoleService(RoleDaoInterface roleDao) {this.roleDao = roleDao;}
 
     public boolean createRole(String role){
+        //todo: Add in character limit check on role string
         if(role != null && role != "") {
             return roleDao.createRole(role);
         }else{
@@ -19,7 +20,11 @@ public class RoleService {
     }
 
     public UserRole getRole(int roleId){
-        return roleDao.getRole(roleId);
+        if(roleId > 0) {
+            return roleDao.getRole(roleId);
+        }else{
+            return null;
+        }
     }
 
     public List<UserRole> getRoles(){
@@ -27,10 +32,20 @@ public class RoleService {
     }
 
     public boolean deleteRole(int roleId){
-        return roleDao.deleteRole(roleId);
+        UserRole role = getRole(roleId);
+        if(role != null) {
+            return roleDao.deleteRole(roleId);
+        }else{
+            return false;
+        }
     }
 
     public UserRole updateRole(UserRole role){
-        return roleDao.updateRole(role);
+        UserRole updatedRole = getRole(role.getId());
+        if(updatedRole != null) {
+            return roleDao.updateRole(role);
+        }else{
+            return null;
+        }
     }
 }
