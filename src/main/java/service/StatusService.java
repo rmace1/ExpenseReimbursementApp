@@ -20,7 +20,7 @@ public class StatusService {
     }
 
     public ReimbursementStatus getStatusById(int statusId) {
-        return statusDao.getStatus(statusId);
+        return statusDao.getStatusById(statusId);
     }
 
 

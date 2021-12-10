@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface StatusDaoInterface {
     boolean createStatus(String status);
-    ReimbursementStatus getStatus(int statusId);
+    ReimbursementStatus getStatusById(int statusId);
     List<ReimbursementStatus> getAllStatuses();
     boolean deleteStatus(int statusId);
     ReimbursementStatus updateStatus(ReimbursementStatus status);

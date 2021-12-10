@@ -56,7 +56,7 @@ public class StatusDao implements StatusDaoInterface {
     }
 
     @Override
-    public ReimbursementStatus getStatus(int statusId) {
+    public ReimbursementStatus getStatusById(int statusId) {
         ReimbursementStatus status = null;
         try(Connection conn = DriverManager.getConnection(url, userName, password)){
             String sql = "SELECT * FROM ers_reimbursement_status WHERE reimb_status_id = ?;";
@@ -123,7 +123,7 @@ public class StatusDao implements StatusDaoInterface {
             boolean updated = (ps.executeUpdate() > 0);
             log.info("Status updated: " + updated);
 
-            return getStatus(status.getId());
+            return getStatusById(status.getId());
         }catch(Exception e){
             log.error(e);
         }

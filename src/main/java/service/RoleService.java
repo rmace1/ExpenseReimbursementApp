@@ -11,7 +11,11 @@ public class RoleService {
     public RoleService(RoleDaoInterface roleDao) {this.roleDao = roleDao;}
 
     public boolean createRole(String role){
-        return roleDao.createRole(role);
+        if(role != null && role != "") {
+            return roleDao.createRole(role);
+        }else{
+            return false;
+        }
     }
 
     public UserRole getRole(int roleId){

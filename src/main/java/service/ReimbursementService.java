@@ -31,7 +31,7 @@ public class ReimbursementService {
 
         user = userDao.getUser(newTicket.getAuthor());
         type = typeDao.getType(newTicket.getTypeId());
-        status = statusDao.getStatus(newTicket.getStatusId());
+        status = statusDao.getStatusById(newTicket.getStatusId());
 
         if(user == null || type == null || status == null){
             return false;

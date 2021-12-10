@@ -24,16 +24,32 @@ class RoleServiceTest {
 
     @Test
     void createRole() {
-        Mockito.when(roleService.createRole("DENIED")).thenReturn(true);
+        Mockito.when(roleDao.createRole("DENIED")).thenReturn(true);
 
         assertTrue(roleService.createRole("DENIED"));
+    }
+
+    @Test
+    void createNullRole() {
+        String role = null;
+        //Mockito.when(roleService.createRole(role)).thenReturn(true);
+
+        assertFalse(roleService.createRole(role));
+    }
+
+    @Test
+    void createEmptyRole() {
+        String role = "";
+        Mockito.when(roleDao.createRole(role)).thenReturn(true);
+
+        assertFalse(roleService.createRole(role));
     }
 
     @Test
     void getRole() {
         UserRole role = new UserRole(1, "MANAGER");
 
-        Mockito.when(roleService.getRole(1)).thenReturn(role);
+        Mockito.when(roleDao.getRole(1)).thenReturn(role);
 
         UserRole actualRole = roleService.getRole(1);
 
@@ -46,7 +62,7 @@ class RoleServiceTest {
         roles.add(new UserRole(1, "MANAGER"));
         roles.add(new UserRole(2, "EMPLOYEE"));
 
-        Mockito.when(roleService.getRoles()).thenReturn(roles);
+        Mockito.when(roleDao.getRoles()).thenReturn(roles);
 
         List<UserRole> actualRoles = roleService.getRoles();
 
@@ -55,7 +71,7 @@ class RoleServiceTest {
 
     @Test
     void deleteRole() {
-        Mockito.when(roleService.deleteRole(1)).thenReturn(true);
+        Mockito.when(roleDao.deleteRole(1)).thenReturn(true);
 
         assertTrue(roleService.deleteRole(1));
     }
@@ -64,7 +80,7 @@ class RoleServiceTest {
     void updateRole() {
         UserRole updatedRole = new UserRole(1, "MANAGER");
 
-        Mockito.when(roleService.updateRole(updatedRole)).thenReturn(updatedRole);
+        Mockito.when(roleDao.updateRole(updatedRole)).thenReturn(updatedRole);
 
         UserRole actualRole = roleService.updateRole(updatedRole);
 

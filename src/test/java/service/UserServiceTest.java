@@ -54,7 +54,7 @@ class UserServiceTest {
     void getUser() {
         User user = new User(1,"rmace", "password","richard", "mace"
                 ,"rmace@revnet.net", 1);
-        Mockito.when(userService.getUser(1)).thenReturn(user);
+        Mockito.when(userDao.getUser(1)).thenReturn(user);
 
         User actualUser = userService.getUser(1);
 
@@ -70,7 +70,7 @@ class UserServiceTest {
         users.add(new User(2,"rmac", "password","richard", "mac"
                 ,"rmac@revnet.net", 1));
 
-        Mockito.when(userService.getAllUsers()).thenReturn(users);
+        Mockito.when(userDao.getAllUsers()).thenReturn(users);
 
         List<User> actualUsers = userService.getAllUsers();
 
@@ -83,7 +83,7 @@ class UserServiceTest {
         User user = new User(1,"rmace", "password","richard", "mace"
                 ,"rmace@revnet.net", 1);
         UserRole role = new UserRole(1, "LODGING");
-        Mockito.when(userService.deleteUser(1)).thenReturn(true);
+        Mockito.when(userDao.deleteUser(1)).thenReturn(true);
 
 
         assertTrue(userService.deleteUser(1));
@@ -93,7 +93,7 @@ class UserServiceTest {
     void updateUser() {
         User updatedUser = new User(1,"rmace", "password","Ricard", "Mase"
                 ,"rmase@revnet.net", 1);
-        Mockito.when(userService.updateUser(updatedUser)).thenReturn(updatedUser);
+        Mockito.when(userDao.updateUser(updatedUser)).thenReturn(updatedUser);
 
         User actualUser = userService.updateUser(updatedUser);
 

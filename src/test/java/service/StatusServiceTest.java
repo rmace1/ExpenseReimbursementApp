@@ -29,7 +29,7 @@ class StatusServiceTest {
 
     @Test
     void createStatus() {
-        Mockito.when(statusService.createStatus("LODGING")).thenReturn(true);
+        Mockito.when(statusDao.createStatus("LODGING")).thenReturn(true);
 
         assertTrue(statusService.createStatus("LODGING"));
 
@@ -39,7 +39,7 @@ class StatusServiceTest {
     void getStatus() {
         ReimbursementStatus status = new ReimbursementStatus(1, "LODGING");
 
-        Mockito.when(statusService.getStatusById(1)).thenReturn(status);
+        Mockito.when(statusDao.getStatusById(1)).thenReturn(status);
 
         ReimbursementStatus actualStatus = statusService.getStatusById(1);
 
@@ -52,7 +52,7 @@ class StatusServiceTest {
         statusList.add(new ReimbursementStatus(1, "LODGING"));
         statusList.add(new ReimbursementStatus(2, "TRAVEL"));
 
-        Mockito.when(statusService.getAllStatuses()).thenReturn(statusList);
+        Mockito.when(statusDao.getAllStatuses()).thenReturn(statusList);
 
         List<ReimbursementStatus> actualList = statusService.getAllStatuses();
 
@@ -62,7 +62,7 @@ class StatusServiceTest {
 
     @Test
     void deleteStatus() {
-        Mockito.when(statusService.deleteStatus(1)).thenReturn(true);
+        Mockito.when(statusDao.deleteStatus(1)).thenReturn(true);
 
         assertTrue(statusService.deleteStatus(1));
     }
@@ -71,7 +71,7 @@ class StatusServiceTest {
     void updateStatus() {
         ReimbursementStatus updatedStatus = new ReimbursementStatus(1, "LODGING");
 
-        Mockito.when(statusService.updateStatus(updatedStatus)).thenReturn(updatedStatus);
+        Mockito.when(statusDao.updateStatus(updatedStatus)).thenReturn(updatedStatus);
 
         ReimbursementStatus actualStatus = statusService.updateStatus(updatedStatus);
 

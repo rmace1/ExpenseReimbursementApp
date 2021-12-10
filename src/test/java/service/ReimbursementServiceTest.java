@@ -35,7 +35,7 @@ class ReimbursementServiceTest {
         Mockito.when(userDao.getUser(ticket.getAuthor())).thenReturn(new User(1, "rmace", "password", "richard", "mace",
                 "rmace@revnet.net", 1));
         Mockito.when(typeDao.getType(ticket.getTypeId())).thenReturn(new ReimbursementType(1, "LODGING"));
-        Mockito.when(statusDao.getStatus(ticket.getStatusId())).thenReturn(new ReimbursementStatus(1, "APPROVED"));
+        Mockito.when(statusDao.getStatusById(ticket.getStatusId())).thenReturn(new ReimbursementStatus(1, "APPROVED"));
         Mockito.when(reimbDao.createNewTicket(ticket)).thenReturn(true);
 
         assertTrue(reimbService.createNewReimbursementTicket(ticket));
@@ -49,7 +49,7 @@ class ReimbursementServiceTest {
         //Mockito.when(userDao.getUser(ticket.getAuthor())).thenReturn(new User(1, "rmace", "password", "richard", "mace",
         //        "rmace@revnet.net", 1));
         Mockito.when(typeDao.getType(ticket.getTypeId())).thenReturn(new ReimbursementType(1, "LODGING"));
-        Mockito.when(statusDao.getStatus(ticket.getStatusId())).thenReturn(new ReimbursementStatus(1, "APPROVED"));
+        Mockito.when(statusDao.getStatusById(ticket.getStatusId())).thenReturn(new ReimbursementStatus(1, "APPROVED"));
         //Mockito.when(reimbDao.createNewTicket(ticket)).thenReturn(true);
 
         assertFalse(reimbService.createNewReimbursementTicket(ticket));
@@ -63,7 +63,7 @@ class ReimbursementServiceTest {
         Mockito.when(userDao.getUser(ticket.getAuthor())).thenReturn(new User(1, "rmace", "password", "richard", "mace",
                 "rmace@revnet.net", 1));
         //Mockito.when(typeDao.getTypeById(ticket.getTypeId())).thenReturn(new ReimbursementType(1, "LODGING"));
-        Mockito.when(statusDao.getStatus(ticket.getStatusId())).thenReturn(new ReimbursementStatus(1, "APPROVED"));
+        Mockito.when(statusDao.getStatusById(ticket.getStatusId())).thenReturn(new ReimbursementStatus(1, "APPROVED"));
         //Mockito.when(reimbDao.createNewTicket(ticket)).thenReturn(true);
 
         assertFalse(reimbService.createNewReimbursementTicket(ticket));
@@ -88,7 +88,7 @@ class ReimbursementServiceTest {
         Timestamp ts = new Timestamp(0);
         Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1, 1);
 
-        Mockito.when(reimbService.getOneTicket(ticket.getId())).thenReturn(ticket);
+        Mockito.when(reimbDao.getOneTicket(ticket.getId())).thenReturn(ticket);
 
         Reimbursement actualTicket = reimbService.getOneTicket(ticket.getId());
 
@@ -103,7 +103,7 @@ class ReimbursementServiceTest {
         tickets.add( new Reimbursement(1, 5.00, ts, 1, 1, 1, 1));
         tickets.add( new Reimbursement(2, 10.00, ts, 1, 1, 1, 1));
 
-        Mockito.when(reimbService.getAllTickets()).thenReturn(tickets);
+        Mockito.when(reimbDao.getAllTickets()).thenReturn(tickets);
 
         List<Reimbursement> actualTickets = reimbService.getAllTickets();
 
@@ -118,7 +118,7 @@ class ReimbursementServiceTest {
         tickets.add( new Reimbursement(1, 5.00, ts, 1, 1, 1, 1));
         tickets.add( new Reimbursement(2, 10.00, ts, 1, 1, 2, 2));
 
-        Mockito.when(reimbService.getAllTicketsByUser(1)).thenReturn(tickets);
+        Mockito.when(reimbDao.getAllTicketsByUser(1)).thenReturn(tickets);
 
         List<Reimbursement> actualTickets = reimbService.getAllTicketsByUser(1);
 
@@ -132,7 +132,7 @@ class ReimbursementServiceTest {
         tickets.add( new Reimbursement(1, 5.00, ts, 1, 1, 1, 1));
         tickets.add( new Reimbursement(2, 10.00, ts, 2, 1, 2, 1));
 
-        Mockito.when(reimbService.getAllTicketsByType(1)).thenReturn(tickets);
+        Mockito.when(reimbDao.getAllTicketsByType(1)).thenReturn(tickets);
 
         List<Reimbursement> actualTickets = reimbService.getAllTicketsByType(1);
 
@@ -146,7 +146,7 @@ class ReimbursementServiceTest {
         tickets.add( new Reimbursement(1, 5.00, ts, 1, 1, 1, 1));
         tickets.add( new Reimbursement(2, 10.00, ts, 2, 1, 1, 2));
 
-        Mockito.when(reimbService.getAllTicketsByStatus(1)).thenReturn(tickets);
+        Mockito.when(reimbDao.getAllTicketsByStatus(1)).thenReturn(tickets);
 
         List<Reimbursement> actualTickets = reimbService.getAllTicketsByStatus(1);
 
@@ -158,7 +158,7 @@ class ReimbursementServiceTest {
         Timestamp ts = new Timestamp(0);
         Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1, 1);
 
-        Mockito.when(reimbService.deleteTicket(ticket.getId())).thenReturn(true);
+        Mockito.when(reimbDao.deleteTicket(ticket.getId())).thenReturn(true);
 
         assertTrue(reimbService.deleteTicket(ticket.getId()));
     }
@@ -179,7 +179,7 @@ class ReimbursementServiceTest {
         user.setRole("MANAGER");
 
         Mockito.when(userDao.getUser(user.getId())).thenReturn(user);
-        Mockito.when(reimbService.approveTicket(ticket.getId(), user.getId())).thenReturn(true);
+        Mockito.when(reimbDao.approveTicket(ticket.getId(), user.getId())).thenReturn(true);
 
         assertTrue(reimbService.approveTicket(ticket.getId(), user.getId()));
     }
@@ -194,7 +194,7 @@ class ReimbursementServiceTest {
 
         //To test if user is null comment out the Mockito line below.  Mockito returns null by default.
         //Mockito.when(userDao.getUser(user.getId())).thenReturn(user);
-        //Mockito.when(reimbService.approveTicket(ticket.getId(), user.getId())).thenReturn(true);
+        //Mockito.when(reimbDao.approveTicket(ticket.getId(), user.getId())).thenReturn(true);
 
         assertFalse(reimbService.approveTicket(ticket.getId(), user.getId()));
     }
@@ -208,7 +208,7 @@ class ReimbursementServiceTest {
         user.setRole("EMPLOYEE");
 
         Mockito.when(userDao.getUser(user.getId())).thenReturn(user);
-        //Mockito.when(reimbService.approveTicket(ticket.getId(), user.getId())).thenReturn(true);
+        //Mockito.when(reimbDao.approveTicket(ticket.getId(), user.getId())).thenReturn(true);
 
         assertFalse(reimbService.approveTicket(ticket.getId(), user.getId()));
     }
@@ -222,7 +222,7 @@ class ReimbursementServiceTest {
         user.setRole("MANAGER");
 
         Mockito.when(userDao.getUser(user.getId())).thenReturn(user);
-        Mockito.when(reimbService.denyTicket(ticket.getId(), user.getId())).thenReturn(true);
+        Mockito.when(reimbDao.denyTicket(ticket.getId(), user.getId())).thenReturn(true);
 
         assertTrue(reimbService.denyTicket(ticket.getId(), user.getId()));
     }
@@ -237,7 +237,7 @@ class ReimbursementServiceTest {
 
         //To test if user is null comment out the Mockito line below.  Mockito returns null by default.
         Mockito.when(userDao.getUser(user.getId())).thenReturn(user);
-        //Mockito.when(reimbService.denyTicket(ticket.getId(), user.getId())).thenReturn(true);
+        //Mockito.when(reimbDao.denyTicket(ticket.getId(), user.getId())).thenReturn(true);
 
         assertFalse(reimbService.denyTicket(ticket.getId(), user.getId()));
     }
@@ -252,7 +252,7 @@ class ReimbursementServiceTest {
 
         //To test if user is null comment out the Mockito line below.  Mockito returns null by default.
         //Mockito.when(userDao.getUser(user.getId())).thenReturn(user);
-        //Mockito.when(reimbService.denyTicket(ticket.getId(), user.getId())).thenReturn(true);
+        //Mockito.when(reimbDao.denyTicket(ticket.getId(), user.getId())).thenReturn(true);
 
         assertFalse(reimbService.denyTicket(ticket.getId(), user.getId()));
     }

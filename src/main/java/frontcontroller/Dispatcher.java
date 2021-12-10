@@ -13,31 +13,12 @@ public class Dispatcher {
         TypeController typeController = new TypeController();
         UserController userController = new UserController();
 
-        app.get("/api/login", context -> {
-            context.sessionAttribute("user-session", 123);
-            context.result("Logged in");
-        });
-
-        app.get("/api/check-session", context -> {
-            int key = 0;
-            try {
-                key = context.sessionAttribute("user-session");
-            }catch(Exception e){
-
-            }
-            if(key == 123) {
-                context.result("session good");
-            }else{
-                context.result("session not good");
-            }
-        });
-
-        app.get("/api/logout", context -> {
-            context.sessionAttribute("user-session", 0);
-            context.result("Logged out");
-        });
-
         app.routes(() -> {
+            path("/api/session", () -> {
+                get(ApiController::checkSession);
+                post(ApiController::login);
+                delete(ApiController::logout);
+            });
             path("/reimbursements", () -> {
                 get(reimbController::getAllTickets);  //form param
                 post(reimbController::createReimbursementTicket);  //form params
@@ -58,7 +39,7 @@ public class Dispatcher {
                 });
             });
             path("/roles", () -> {
-                get(roleController::getRoles);
+                get(roleController::getAllRoles);
                 post(roleController::createRole);
                 path("/{id}", () -> {
                    get(roleController::getRoleById);

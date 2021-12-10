@@ -33,7 +33,7 @@ class StatusDaoTest {
     @Test
     void getStatus() {
         statusDao.createStatus("APPROVED");
-        ReimbursementStatus status = statusDao.getStatus(1);
+        ReimbursementStatus status = statusDao.getStatusById(1);
 
         assertEquals(status.getStatus(), "APPROVED");
     }
