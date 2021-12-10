@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.H2Util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -68,5 +69,21 @@ class UserDaoTest {
         User resultUser = userDao.updateUser(updatedUser);
 
         assertEquals(updatedUser.toString(), resultUser.toString());
+    }
+
+    @Test
+    void getAllUsers() {
+        List<User> users = new ArrayList<>();
+        users.add(new User(1,"rmace", "password","richard", "mace"
+                ,"rmace@revnet.net", 1));
+
+        users.add(new User(2,"rmac", "password","richard", "mac"
+                ,"rmac@revnet.net", 1));
+        boolean created = userDao.createUser(users.get(0));
+        created = userDao.createUser(users.get(1));
+
+        List<User> actualUsers = userDao.getAllUsers();
+
+        assertEquals(users.toString(), actualUsers.toString());
     }
 }

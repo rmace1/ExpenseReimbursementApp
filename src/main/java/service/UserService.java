@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.List;
 
 public class UserService {
     UserDaoInterface userDao;
@@ -27,6 +28,11 @@ public class UserService {
         }else {
             return false;
         }
+    }
+
+    public List<User> getAllUsers(){
+
+        return userDao.getAllUsers();
     }
 
      public User getUser(int userId) {

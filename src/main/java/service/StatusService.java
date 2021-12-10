@@ -19,7 +19,7 @@ public class StatusService {
         return statusDao.createStatus(status);
     }
 
-    public ReimbursementStatus getStatus(int statusId) {
+    public ReimbursementStatus getStatusById(int statusId) {
         return statusDao.getStatus(statusId);
     }
 

@@ -2,6 +2,7 @@ package service;
 
 import dao.*;
 import models.*;
+import org.apache.log4j.Logger;
 
 import java.util.List;
 
@@ -10,9 +11,12 @@ public class ReimbursementService {
     UserDaoInterface userDao;
     TypeDaoInterface typeDao;
     StatusDaoInterface statusDao;
+    Logger log = Logger.getLogger(ReimbursementService.class);
+
 
     public ReimbursementService(ReimbursementDaoInterface reimbDao, UserDaoInterface userDao,
                                 TypeDaoInterface typeDao, StatusDaoInterface statusDao) {
+
         this.reimbDao = reimbDao;
         this.userDao = userDao;
         this.typeDao = typeDao;
@@ -74,9 +78,10 @@ public class ReimbursementService {
     public boolean approveTicket(int ticketId, int resolverId){
         User user = userDao.getUser(resolverId);
         if(user != null && user.getRole() == "MANAGER") {
+            log.info("Ticket: " + ticketId + " approved by userID: " + resolverId);
             return reimbDao.approveTicket(ticketId, resolverId);
         }else{
-            //todo log error
+            log.error("User ID: " + resolverId + " not found or is not a MANAGER.");
             return false;
         }
     }
@@ -84,9 +89,10 @@ public class ReimbursementService {
     public boolean denyTicket(int ticketId, int resolverId){
         User user = userDao.getUser(resolverId);
         if(user != null && user.getRole() == "MANAGER") {
+            log.info("Ticket: " + ticketId + " denied by userID: " + resolverId);
             return reimbDao.denyTicket(ticketId, resolverId);
         }else{
-            //todo log error
+            log.error("User ID: " + resolverId + " not found or is not a MANAGER.");
             return false;
         }
     }

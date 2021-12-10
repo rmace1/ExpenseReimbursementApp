@@ -22,20 +22,24 @@ public class ReimbursementController {
 
     }
 
+    //404,
     public void getOneTicket(Context context){
+        context.result("Get one ticket method.");
 
     }
 
     public void getAllTickets(Context context){
-        context.redirect("frontend/test.html");
+        context.result("Get all tickets method.");
     }
 
+    //may not need
     public void getAllTicketsByType(Context context){
 
     }
 
+    //may not need
     public void getAllTicketsByStatus(Context context){
-
+        context.result("Get all tickets by status method.");
     }
 
     public void deleteTicket(Context context){
@@ -43,6 +47,15 @@ public class ReimbursementController {
     }
 
     public void updateTicket(Context context){
+
+    }
+
+    public void resolveTicket(Context context){
+
+    }
+
+    //may not need
+    public void denyTicket(Context context){
 
     }
 }

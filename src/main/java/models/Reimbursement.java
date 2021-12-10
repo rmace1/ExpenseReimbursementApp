@@ -151,11 +151,11 @@ public class Reimbursement {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try {
-            ImageIO.write(bImage, "jpeg", new File("output.jpeg"));
+        /*try {
+            //ImageIO.write(bImage, "jpeg", new File("output.jpeg"));
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
         File fi = new File("output.jpeg");
 
         return fi;

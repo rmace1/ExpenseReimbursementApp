@@ -39,9 +39,9 @@ class StatusServiceTest {
     void getStatus() {
         ReimbursementStatus status = new ReimbursementStatus(1, "LODGING");
 
-        Mockito.when(statusService.getStatus(1)).thenReturn(status);
+        Mockito.when(statusService.getStatusById(1)).thenReturn(status);
 
-        ReimbursementStatus actualStatus = statusService.getStatus(1);
+        ReimbursementStatus actualStatus = statusService.getStatusById(1);
 
         assertEquals(status, actualStatus);
     }
@@ -73,7 +73,7 @@ class StatusServiceTest {
 
         Mockito.when(statusService.updateStatus(updatedStatus)).thenReturn(updatedStatus);
 
-        ReimbursementStatus actualStatus = statusService.getStatus(1);
+        ReimbursementStatus actualStatus = statusService.updateStatus(updatedStatus);
 
         assertEquals(updatedStatus, actualStatus);
     }

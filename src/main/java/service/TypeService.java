@@ -21,7 +21,7 @@ public class TypeService {
         return typeDao.createType(type);
     }
 
-    public ReimbursementType getType(int typeId) {
+    public ReimbursementType getTypeById(int typeId) {
         return typeDao.getType(typeId);
     }
 

@@ -62,7 +62,7 @@ class ReimbursementServiceTest {
 
         Mockito.when(userDao.getUser(ticket.getAuthor())).thenReturn(new User(1, "rmace", "password", "richard", "mace",
                 "rmace@revnet.net", 1));
-        //Mockito.when(typeDao.getType(ticket.getTypeId())).thenReturn(new ReimbursementType(1, "LODGING"));
+        //Mockito.when(typeDao.getTypeById(ticket.getTypeId())).thenReturn(new ReimbursementType(1, "LODGING"));
         Mockito.when(statusDao.getStatus(ticket.getStatusId())).thenReturn(new ReimbursementStatus(1, "APPROVED"));
         //Mockito.when(reimbDao.createNewTicket(ticket)).thenReturn(true);
 
@@ -185,7 +185,7 @@ class ReimbursementServiceTest {
     }
 
     @Test
-    void approveTicketInvalidUser() {
+    void approveTicketInvalidUser1() {
         Timestamp ts = new Timestamp(0);
         Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1, 1);
         User user = new User(1, "rmace", "password", "richard", "mace",
@@ -194,6 +194,20 @@ class ReimbursementServiceTest {
 
         //To test if user is null comment out the Mockito line below.  Mockito returns null by default.
         //Mockito.when(userDao.getUser(user.getId())).thenReturn(user);
+        //Mockito.when(reimbService.approveTicket(ticket.getId(), user.getId())).thenReturn(true);
+
+        assertFalse(reimbService.approveTicket(ticket.getId(), user.getId()));
+    }
+
+    @Test
+    void approveTicketInvalidUser2() {
+        Timestamp ts = new Timestamp(0);
+        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1, 1);
+        User user = new User(1, "rmace", "password", "richard", "mace",
+                "rmace@revnet.net", 1);
+        user.setRole("EMPLOYEE");
+
+        Mockito.when(userDao.getUser(user.getId())).thenReturn(user);
         //Mockito.when(reimbService.approveTicket(ticket.getId(), user.getId())).thenReturn(true);
 
         assertFalse(reimbService.approveTicket(ticket.getId(), user.getId()));
@@ -214,7 +228,7 @@ class ReimbursementServiceTest {
     }
 
     @Test
-    void denyTicketInvalidUser() {
+    void denyTicketInvalidUser1() {
         Timestamp ts = new Timestamp(0);
         Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1, 1);
         User user = new User(1, "rmace", "password", "richard", "mace",
@@ -223,6 +237,21 @@ class ReimbursementServiceTest {
 
         //To test if user is null comment out the Mockito line below.  Mockito returns null by default.
         Mockito.when(userDao.getUser(user.getId())).thenReturn(user);
+        //Mockito.when(reimbService.denyTicket(ticket.getId(), user.getId())).thenReturn(true);
+
+        assertFalse(reimbService.denyTicket(ticket.getId(), user.getId()));
+    }
+
+    @Test
+    void denyTicketInvalidUser2() {
+        Timestamp ts = new Timestamp(0);
+        Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1, 1);
+        User user = new User(1, "rmace", "password", "richard", "mace",
+                "rmace@revnet.net", 1000);
+        user.setRole("EMPLOYEE");
+
+        //To test if user is null comment out the Mockito line below.  Mockito returns null by default.
+        //Mockito.when(userDao.getUser(user.getId())).thenReturn(user);
         //Mockito.when(reimbService.denyTicket(ticket.getId(), user.getId())).thenReturn(true);
 
         assertFalse(reimbService.denyTicket(ticket.getId(), user.getId()));

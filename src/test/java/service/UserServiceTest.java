@@ -10,6 +10,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserServiceTest {
@@ -56,6 +59,23 @@ class UserServiceTest {
         User actualUser = userService.getUser(1);
 
         assertEquals(user, actualUser);
+    }
+
+    @Test
+    void getAllUsers(){
+        List<User> users = new ArrayList<>();
+        users.add(new User(1,"rmace", "password","richard", "mace"
+                ,"rmace@revnet.net", 1));
+
+        users.add(new User(2,"rmac", "password","richard", "mac"
+                ,"rmac@revnet.net", 1));
+
+        Mockito.when(userService.getAllUsers()).thenReturn(users);
+
+        List<User> actualUsers = userService.getAllUsers();
+
+        assertEquals(users.toString(), actualUsers.toString());
+
     }
 
     @Test
