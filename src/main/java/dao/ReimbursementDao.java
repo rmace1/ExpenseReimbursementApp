@@ -52,7 +52,6 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, ticketId);
 
-
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 reimbursement = new Reimbursement(rs.getInt(1), rs.getDouble(2),

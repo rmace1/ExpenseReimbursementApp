@@ -92,7 +92,7 @@ public class ReimbursementService {
     //todo: check if ticket is real
     public boolean approveTicket(int ticketId, int resolverId){
         User user = userDao.getUser(resolverId);
-        if(user != null){// && user.getRole() == "MANAGER") {
+        if(user != null && user.getRole() == "MANAGER") {
             log.info("Ticket: " + ticketId + " approved by userID: " + resolverId);
             return reimbDao.approveTicket(ticketId, resolverId);
         }else{
@@ -104,7 +104,7 @@ public class ReimbursementService {
     //todo: check if ticket is real
     public boolean denyTicket(int ticketId, int resolverId){
         User user = userDao.getUser(resolverId);
-        if(user != null){// && user.getRole() == "MANAGER") {
+        if(user != null && user.getRole() == "MANAGER") {
             log.info("Ticket: " + ticketId + " denied by userID: " + resolverId);
             return reimbDao.denyTicket(ticketId, resolverId);
         }else{

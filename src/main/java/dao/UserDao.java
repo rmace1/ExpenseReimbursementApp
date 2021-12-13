@@ -90,7 +90,7 @@ public class UserDao implements UserDaoInterface {
     public List<User> getAllUsers(){
         List<User> users = new ArrayList<>();
         try(Connection conn = DriverManager.getConnection(url, userName, password)){
-            String sql = "SELECT * FROM ers_users ORDER BY ers_users_id DESC;";
+            String sql = "SELECT * FROM ers_users ORDER BY ers_users_id ASC;";
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();

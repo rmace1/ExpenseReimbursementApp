@@ -44,6 +44,18 @@ public class UserService {
      }
 
      public User updateUser(User updatedUser){
-        return userDao.updateUser(updatedUser);
+        User user = userDao.getUser(updatedUser.getId());
+        if(user == null){
+            return null;
+        }
+
+        if(updatedUser.getUserName() != null){user.setUserName(updatedUser.getUserName());}
+        if(updatedUser.getPassword() != null){user.setPassword(updatedUser.getPassword());}
+        if(updatedUser.getFirstName() != null){user.setFirstName(updatedUser.getFirstName());}
+        if(updatedUser.getLastName() != null){user.setLastName(updatedUser.getLastName());}
+        if(updatedUser.getEmail() != null){user.setEmail(updatedUser.getEmail());}
+        if(updatedUser.getRoleId() != 0){user.setRoleId(updatedUser.getRoleId());}
+
+        return userDao.updateUser(user);
      }
 }
