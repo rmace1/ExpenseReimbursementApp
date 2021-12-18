@@ -142,6 +142,7 @@ class ReimbursementDaoTest {
         Timestamp ts = new Timestamp(System.currentTimeMillis());
         Reimbursement newTicket1 = new Reimbursement(2, 5.00, ts, 1, 1, 1);
         newTicket1.setResolver(1);
+        newTicket1.setDescription("ALL THE MICKEY MOUSE EARS!!!!");
         boolean created = reimbDao.createNewTicket(newTicket1);
         List<Reimbursement> tickets = reimbDao.getAllTickets();
 

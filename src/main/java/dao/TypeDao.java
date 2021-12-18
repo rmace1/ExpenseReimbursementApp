@@ -79,6 +79,28 @@ public class TypeDao implements TypeDaoInterface{
         return type;
     }
 
+    public ReimbursementType getTypeByName(String typeName){
+        ReimbursementType type = null;
+        try(Connection conn = DriverManager.getConnection(url, userName, password)){
+            String sql = "SELECT * FROM ers_reimbursement_type WHERE reimb_type = ?;";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, typeName);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                type = new ReimbursementType(rs.getInt(1), rs.getString(2));
+            }
+
+            log.info("Type retrieved.");
+            return type;
+        }catch(Exception e){
+            log.error(e);
+        }
+        return type;
+    }
+
+
     @Override
     public List<ReimbursementType> getAllTypes() {
         List<ReimbursementType> types = new ArrayList<>();

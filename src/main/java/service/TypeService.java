@@ -26,6 +26,8 @@ public class TypeService {
         return typeDao.getType(typeId);
     }
 
+    public ReimbursementType getTypeByName(String type){return typeDao.getTypeByName(type);}
+
     public List<ReimbursementType> getAllTypes() {
         return typeDao.getAllTypes();
     }

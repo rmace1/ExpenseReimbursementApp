@@ -11,4 +11,6 @@ public interface StatusDaoInterface {
     List<ReimbursementStatus> getAllStatuses();
     boolean deleteStatus(int statusId);
     ReimbursementStatus updateStatus(ReimbursementStatus status);
+
+    ReimbursementStatus getStatusByName(String status);
 }

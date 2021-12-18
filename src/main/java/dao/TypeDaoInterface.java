@@ -10,4 +10,6 @@ public interface TypeDaoInterface {
     List<ReimbursementType> getAllTypes();
     boolean deleteType(int typeId);
     ReimbursementType updateType(ReimbursementType updatedType);
+
+    ReimbursementType getTypeByName(String type);
 }

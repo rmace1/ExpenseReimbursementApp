@@ -1,33 +1,53 @@
 package controllers;
 
+import dao.RoleDao;
+import dao.UserDao;
 import io.javalin.http.Context;
 import models.JsonResponse;
 import models.User;
+import models.UserDTO;
+import service.UserService;
 
 public class ApiController {
+    static UserService userService = new UserService(new UserDao(), new RoleDao());
     public static void login(Context context){
         User user = context.bodyAsClass(User.class);
-        System.out.println(user.toString());
-        //todo: get user based on username (either string or have them sign in using their employee id
+        User employee = null;
+        Boolean loggedIn = false;
 
-        JsonResponse jsonResponse = new JsonResponse(user, "Logged in", true);
-        context.sessionAttribute("user-session", user.getUserName());
+        if(user != null) {
+            employee = userService.getUserByName(user);
+            loggedIn = (employee != null);
+        }
+
+        /*
+        * if user.password == employee.password continue, else return jsonResponse with false
+        * */
+        UserDTO userDto = null;
+        if(employee != null){
+            userDto = new UserDTO(employee);
+            context.sessionAttribute("user-session", userDto);
+
+        }else{
+
+        }
+
+        JsonResponse jsonResponse = new JsonResponse(userDto, "Login Attempted.", loggedIn);
         context.json(JsonConverter.convertToJson(jsonResponse));
     }
 
     public static void checkSession(Context context){
         User user = null;
-        //System.out.println(user.toString());
-        String key = "";
+
+        UserDTO key = null;
         try {
-            //user = context.bodyAsClass(User.class);
             key = context.sessionAttribute("user-session");
         }catch(Exception e){
 
         }
-       //System.out.println(user.toString());
-        JsonResponse jsonResponse = new JsonResponse(null, "", false);
-        if(key == "rmace") {
+
+        JsonResponse jsonResponse = new JsonResponse(key, "", false);
+        if(key != null) {
             jsonResponse.setSuccessful(true);
             jsonResponse.setMessage("Session is good.");
         }else{
@@ -38,7 +58,7 @@ public class ApiController {
     }
 
     public static void logout(Context context){
-        context.sessionAttribute("user-session", 0);
+        context.sessionAttribute("user-session", null);
         context.result("Logged out");
     }
 

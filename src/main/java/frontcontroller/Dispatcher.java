@@ -28,10 +28,20 @@ public class Dispatcher {
                     put(reimbController::resolveTicket); //form param for approve/deny (boolean?);
                     delete(reimbController::deleteTicket); //path param for id
                 });
+                path("/statuses/{id}", () -> {
+                    get(reimbController::getAllTicketsByStatus);
+                });
+                path("/types/{id}", () -> {
+                    get(reimbController::getAllTicketsByType);
+                });
+                path("/users/{id}", () -> {
+                    get(reimbController::getAllTicketsByUser);
+                });
             });
             path("/users", () -> {
                 get(userController::getAllUsers);
                 post(userController::createUser);
+                patch(userController::resetPasswordForUser);
                 path("/{id}", () -> {
                     get(userController::getUserById);
                     patch(userController::updateUser);

@@ -5,12 +5,14 @@ import dao.StatusDao;
 import dao.TypeDao;
 import dao.UserDao;
 import io.javalin.http.Context;
+import io.javalin.http.UploadedFile;
 import models.JsonResponse;
 import models.Reimbursement;
 import org.apache.log4j.Logger;
 import service.ReimbursementService;
 
-import java.io.File;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,7 @@ public class ReimbursementController {
         int author = 0;
         int statusId = 0;
         int typeId = 0;
+        String receiptString = "";
 
         try{
             amount = Double.parseDouble(context.formParam("amount"));
@@ -41,20 +44,59 @@ public class ReimbursementController {
         }catch (Exception e){
             log.error(e);
         }
+        Reimbursement ticket = new Reimbursement(id, amount, ts, author, statusId, typeId);
+
+
+        //Deals with storing the uploaded file and its conversion to/from byte array
+        byte[] reciept = null;
+        File file = null;
+        UploadedFile uploadedFile = null;
+        try{
+            uploadedFile = context.uploadedFiles().get(0);
+        }catch (Exception e){
+
+        }
+
+        InputStream in = null;
+
+
+        try {
+            in = uploadedFile.getContent();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            byte[] buf = new byte[8192];
+            for (;;) {
+                int nread = in.read(buf, 0, buf.length);
+                if (nread <= 0) {
+                    break;
+                }
+                baos.write(buf, 0, nread);
+            }
+            in.close();
+            baos.close();
+            byte[] bytes = baos.toByteArray();
+            reciept = bytes;
+            //file = reimbService.toImage(reciept);
+            ticket.setReciept(reciept);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         //optional
         String description;
-        byte[] reciept;
-        File file = null;
-
+        String type = "";
+        try{
+            type = context.formParam("type");
+            ticket.setType(type);
+        }catch (Exception e){
+        }
         try{
             description = context.formParam("description");
-
+            ticket.setDescription(description);
         }catch (Exception e){
             log.info("Description text in reimbursement creation was not present.  If none was desired you can ignore this.");
         }
 
-        Reimbursement ticket = new Reimbursement(id, amount, ts, author, statusId, typeId);
         Boolean successful = reimbService.createNewReimbursementTicket(ticket);
 
         JsonResponse jsonResponse = new JsonResponse(null, "", successful);
@@ -140,12 +182,75 @@ public class ReimbursementController {
 
     //may not need
     public void getAllTicketsByType(Context context){
+        int typeId = 0;
 
+        try{
+            typeId = Integer.parseInt(context.pathParam("id"));
+        }catch (Exception e){
+
+        }
+        List<Reimbursement> tickets = null;
+
+        if(typeId > 0){
+            log.info("Getting all tickets by type id.");
+            tickets = reimbService.getAllTicketsByType(typeId);
+        }
+
+        JsonResponse jsonResponse = new JsonResponse(tickets, "", true);
+
+
+        context.contentType("application/json");
+        context.result(JsonConverter.convertToJson(jsonResponse));
     }
 
     //may not need
     public void getAllTicketsByStatus(Context context){
+        int statusId = 0;
+         try{
+            statusId = Integer.parseInt(context.pathParam("id"));
+        }catch (Exception e){
 
+        }
+
+
+
+        List<Reimbursement> tickets = null;
+
+        if(statusId > 0){
+            log.info("Getting all tickets by status id.");
+            tickets = reimbService.getAllTicketsByStatus(statusId);
+        }
+
+        JsonResponse jsonResponse = new JsonResponse(tickets, "", true);
+
+
+        context.contentType("application/json");
+        context.result(JsonConverter.convertToJson(jsonResponse));
+    }
+
+    public void getAllTicketsByUser(Context context){
+
+        int userId = 0;
+
+
+        try{
+            userId = Integer.parseInt(context.pathParam("id"));
+        }catch (Exception e){
+
+        }
+
+        List<Reimbursement> tickets = null;
+
+         if(userId > 0){
+            log.info("Getting all tickets by user id.");
+            tickets = reimbService.getAllTicketsByUser(userId);
+        }
+
+        JsonResponse jsonResponse = new JsonResponse(tickets, "", true);
+
+
+        context.contentType("application/json");
+        context.result(JsonConverter.convertToJson(jsonResponse));
     }
 
     public void deleteTicket(Context context){

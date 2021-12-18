@@ -5,6 +5,8 @@ import org.apache.log4j.Logger;
 
 import java.io.FileInputStream;
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -45,9 +47,11 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
 
         try (Connection conn = DriverManager.getConnection(url, userName, password)) {
             //id, amount, submitted timestamp, resolved timestamp, description, receipt, author, resolver, statusId, typeId
-            java.lang.String sql = "SELECT er.*, ers.reimb_status, ert.reimb_type FROM ers_reimbursement er \n" +
+            java.lang.String sql = "SELECT er.*, ers.reimb_status, ert.reimb_type, eu.ers_username, eu2.ers_username FROM ers_reimbursement er \n" +
                     "JOIN ers_reimbursement_status ers ON er.reimb_status_id = ers.reimb_status_id\n" +
                     "JOIN ers_reimbursement_type ert ON er.reimb_type_id = ert.reimb_type_id \n" +
+                    "LEFT JOIN ers_users eu ON er.reimb_author = eu.ers_users_id \n" +
+                    "LEFT JOIN ers_users eu2 ON er.reimb_resolver = eu2.ers_users_id  \n" +
                     "WHERE er.reimb_id = ?;";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, ticketId);
@@ -61,6 +65,17 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
                         rs.getInt(9), rs.getInt(10));
                 reimbursement.setStatus(rs.getString(11));
                 reimbursement.setType(rs.getString(12));
+                reimbursement.setAuthorName(rs.getString(13));
+
+                if(rs.getString(14) != null) {
+                    reimbursement.setResolverName(rs.getString(14));
+                }else {
+                    reimbursement.setResolverName("");
+                }
+                reimbursement.setSubmittedDate(new SimpleDateFormat("MM/dd/yyyy").format(reimbursement.getSubmitted()));
+                if(reimbursement.getResolved() != null) {
+                    reimbursement.setResolvedDate(new SimpleDateFormat("MM/dd/yyyy").format(reimbursement.getResolved()));
+                }
             }
             log.info("Reimbursement ticket retrieved from database successfully.");
         } catch (Exception e)
@@ -76,9 +91,11 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
         List<Reimbursement> tickets = new ArrayList<>();
 
         try(Connection conn = DriverManager.getConnection(url, userName, password)){
-            String sql = "SELECT er.*, ers.reimb_status, ert.reimb_type FROM ers_reimbursement er \n" +
+            String sql = "SELECT er.*, ers.reimb_status, ert.reimb_type, eu.ers_username, eu2.ers_username FROM ers_reimbursement er \n" +
                     "JOIN ers_reimbursement_status ers ON er.reimb_status_id = ers.reimb_status_id\n" +
-                    "JOIN ers_reimbursement_type ert ON er.reimb_type_id = ert.reimb_type_id ORDER BY er.reimb_id ASC;";
+                    "JOIN ers_reimbursement_type ert ON er.reimb_type_id = ert.reimb_type_id \n" +
+                    "LEFT JOIN ers_users eu ON er.reimb_author = eu.ers_users_id \n" +
+                    "LEFT JOIN ers_users eu2 ON er.reimb_resolver = eu2.ers_users_id  ORDER BY er.reimb_id ASC;";
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
@@ -91,7 +108,20 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
                         rs.getInt(9), rs.getInt(10));
                 reimbursement.setStatus(rs.getString(11));
                 reimbursement.setType(rs.getString(12));
+                reimbursement.setAuthorName(rs.getString(13));
+
+                if(rs.getString(14) != null) {
+                    reimbursement.setResolverName(rs.getString(14));
+                }else {
+                    reimbursement.setResolverName("");
+                }
+
+                reimbursement.setSubmittedDate(new SimpleDateFormat("MM/dd/yyyy").format(reimbursement.getSubmitted()));
+                if(reimbursement.getResolved() != null) {
+                    reimbursement.setResolvedDate(new SimpleDateFormat("MM/dd/yyyy").format(reimbursement.getResolved()));
+                }
                 tickets.add(reimbursement);
+
             }
             log.info("Tickets retrieved.");
             return tickets;
@@ -106,9 +136,11 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
         List<Reimbursement> tickets = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(url, userName, password)) {
             //id, amount, submitted timestamp, resolved timestamp, description, receipt, author, resolver, statusId, typeId
-            java.lang.String sql = "SELECT er.*, ers.reimb_status, ert.reimb_type FROM ers_reimbursement er \n" +
+            java.lang.String sql = "SELECT er.*, ers.reimb_status, ert.reimb_type, eu.ers_username, eu2.ers_username FROM ers_reimbursement er \n" +
                     "JOIN ers_reimbursement_status ers ON er.reimb_status_id = ers.reimb_status_id\n" +
                     "JOIN ers_reimbursement_type ert ON er.reimb_type_id = ert.reimb_type_id \n" +
+                    "LEFT JOIN ers_users eu ON er.reimb_author = eu.ers_users_id \n" +
+                    "LEFT JOIN ers_users eu2 ON er.reimb_resolver = eu2.ers_users_id  \n" +
                     "WHERE er.reimb_author = ? ORDER BY er.reimb_id ASC;";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, userId);
@@ -123,6 +155,17 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
                         rs.getInt(9), rs.getInt(10));
                 reimbursement.setStatus(rs.getString(11));
                 reimbursement.setType(rs.getString(12));
+                reimbursement.setAuthorName(rs.getString(13));
+
+                if(rs.getString(14) != null) {
+                    reimbursement.setResolverName(rs.getString(14));
+                }else {
+                    reimbursement.setResolverName("");
+                }
+                reimbursement.setSubmittedDate(new SimpleDateFormat("MM/dd/yyyy").format(reimbursement.getSubmitted()));
+                if(reimbursement.getResolved() != null) {
+                    reimbursement.setResolvedDate(new SimpleDateFormat("MM/dd/yyyy").format(reimbursement.getResolved()));
+                }
                 tickets.add(reimbursement);
             }
             log.info("Reimbursement tickets retrieved from database successfully.");
@@ -138,9 +181,11 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
         List<Reimbursement> tickets = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(url, userName, password)) {
             //id, amount, submitted timestamp, resolved timestamp, description, receipt, author, resolver, statusId, typeId
-            java.lang.String sql = "SELECT er.*, ers.reimb_status, ert.reimb_type FROM ers_reimbursement er \n" +
+            java.lang.String sql = "SELECT er.*, ers.reimb_status, ert.reimb_type, eu.ers_username, eu2.ers_username FROM ers_reimbursement er \n" +
                     "JOIN ers_reimbursement_status ers ON er.reimb_status_id = ers.reimb_status_id\n" +
                     "JOIN ers_reimbursement_type ert ON er.reimb_type_id = ert.reimb_type_id \n" +
+                    "LEFT JOIN ers_users eu ON er.reimb_author = eu.ers_users_id \n" +
+                    "LEFT JOIN ers_users eu2 ON er.reimb_resolver = eu2.ers_users_id  \n" +
                     "WHERE er.reimb_type_id = ? ORDER BY er.reimb_id ASC;";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, typeId);
@@ -155,6 +200,18 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
                         rs.getInt(9), rs.getInt(10));
                 reimbursement.setStatus(rs.getString(11));
                 reimbursement.setType(rs.getString(12));
+                reimbursement.setAuthorName(rs.getString(13));
+
+                if(rs.getString(14) != null) {
+                    reimbursement.setResolverName(rs.getString(14));
+                }else {
+                    reimbursement.setResolverName("");
+                }
+
+                reimbursement.setSubmittedDate(new SimpleDateFormat("MM/dd/yyyy").format(reimbursement.getSubmitted()));
+                if(reimbursement.getResolved() != null) {
+                    reimbursement.setResolvedDate(new SimpleDateFormat("MM/dd/yyyy").format(reimbursement.getResolved()));
+                }
                 tickets.add(reimbursement);
             }
             log.info("Reimbursement tickets of type (" + tickets.get(0).getTypeId() + ") retrieved from database successfully.");
@@ -170,9 +227,11 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
         List<Reimbursement> tickets = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(url, userName, password)) {
             //id, amount, submitted timestamp, resolved timestamp, description, receipt, author, resolver, statusId, typeId
-            java.lang.String sql = "SELECT er.*, ers.reimb_status, ert.reimb_type FROM ers_reimbursement er \n" +
+            java.lang.String sql = "SELECT er.*, ers.reimb_status, ert.reimb_type, eu.ers_username, eu2.ers_username FROM ers_reimbursement er \n" +
                     "JOIN ers_reimbursement_status ers ON er.reimb_status_id = ers.reimb_status_id\n" +
                     "JOIN ers_reimbursement_type ert ON er.reimb_type_id = ert.reimb_type_id \n" +
+                    "LEFT JOIN ers_users eu ON er.reimb_author = eu.ers_users_id \n" +
+                    "LEFT JOIN ers_users eu2 ON er.reimb_resolver = eu2.ers_users_id  \n" +
                     "WHERE er.reimb_status_id = ? ORDER BY er.reimb_id ASC;";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, statusId);
@@ -187,6 +246,18 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
                         rs.getInt(9), rs.getInt(10));
                 reimbursement.setStatus(rs.getString(11));
                 reimbursement.setType(rs.getString(12));
+                reimbursement.setAuthorName(rs.getString(13));
+
+                if(rs.getString(14) != null) {
+                    reimbursement.setResolverName(rs.getString(14));
+                }else {
+                    reimbursement.setResolverName("");
+                }
+
+                reimbursement.setSubmittedDate(new SimpleDateFormat("MM/dd/yyyy").format(reimbursement.getSubmitted()));
+                if(reimbursement.getResolved() != null) {
+                    reimbursement.setResolvedDate(new SimpleDateFormat("MM/dd/yyyy").format(reimbursement.getResolved()));
+                }
                 tickets.add(reimbursement);
             }
             log.info("Reimbursement tickets of status (" + tickets.get(0).getStatusId() + ") retrieved from database successfully.");
@@ -206,8 +277,8 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setDouble(1, newTicket.getAmount());
             ps.setTimestamp(2, null);// newTicket.getResolved());
-            ps.setString(3, "");// newTicket.getDescription());
-            ps.setBytes(4, null);//newTicket.getReciept());
+            ps.setString(3, newTicket.getDescription());
+            ps.setBytes(4, newTicket.getReciept());
             ps.setInt(5, newTicket.getAuthor());
             if(newTicket.getResolver() == 0){
                 ps.setNull(6, 0);
@@ -245,12 +316,13 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
     @Override
     public boolean approveTicket(int ticketId, int resolverId) {
         try(Connection conn = DriverManager.getConnection(url, userName, password)){
-            String sql = "UPDATE ers_reimbursement SET reimb_resolver = ?, reimb_resolved = ?, reimb_status_id = ? WHERE reimb_id = ?";
+            String sql = "UPDATE ers_reimbursement SET reimb_resolver = ?, " +
+                    "reimb_resolved = ?, reimb_status_id = (SELECT reimb_status_id FROM ers_reimbursement_status " +
+                    "WHERE reimb_status LIKE 'APPROVED') WHERE reimb_id = ?;";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, resolverId);
             ps.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
-            ps.setInt(3, 2);
-            ps.setInt(4, ticketId);
+            ps.setInt(3, ticketId);
 
 
             boolean approved = (ps.executeUpdate() > 0);
@@ -265,12 +337,12 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
     @Override
     public boolean denyTicket(int ticketId, int resolverId) {
         try(Connection conn = DriverManager.getConnection(url, userName, password)){
-            String sql = "UPDATE ers_reimbursement SET reimb_resolver = ?, reimb_resolved = ?, reimb_status_id = ? WHERE reimb_id = ?";
+            String sql = "UPDATE ers_reimbursement SET reimb_resolver = ?, reimb_resolved = ?, reimb_status_id = (SELECT reimb_status_id FROM ers_reimbursement_status \" +\n" +
+                    "                    \"WHERE reimb_status LIKE 'DENIED') WHERE reimb_id = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, resolverId);
             ps.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
-            ps.setInt(3, 3);
-            ps.setInt(4, ticketId);
+            ps.setInt(3, ticketId);
 
 
             boolean denied = (ps.executeUpdate() > 0);

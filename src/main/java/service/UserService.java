@@ -4,6 +4,7 @@ import dao.RoleDaoInterface;
 import dao.UserDaoInterface;
 import models.User;
 import models.UserRole;
+import org.jasypt.util.password.StrongPasswordEncryptor;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,7 +24,12 @@ public class UserService {
     //todo: character limit username (50), password(50 if not encrypted), first/last name (100), email(100)
     public boolean createUser(User user) {
         UserRole role = roleDao.getRole(user.getRoleId());
-        if( role != null) {
+        if( role != null){
+        //http://www.jasypt.org/index.html
+        StrongPasswordEncryptor encryptor = new StrongPasswordEncryptor();
+        String encryptedPass = encryptor.encryptPassword(user.getPassword());
+        user.setPassword(encryptedPass);
+            //String encryptPass = user.getPassword();
             return userDao.createUser(user);
         }else {
             return false;
@@ -36,7 +42,24 @@ public class UserService {
     }
 
      public User getUser(int userId) {
+
         return userDao.getUser(userId);
+     }
+
+     public User getUserByName(User user){
+        User employee = userDao.getUserByName(user.getUserName());
+        if(employee == null){
+            return null;
+        }
+        StrongPasswordEncryptor encryptor = new StrongPasswordEncryptor();
+        boolean passMatches = encryptor.checkPassword(user.getPassword(), employee.getPassword());
+
+
+        if(passMatches){
+            return employee;
+        }else {
+            return null;
+        }
      }
 
      public boolean deleteUser(int userId) {
@@ -45,12 +68,21 @@ public class UserService {
 
      public User updateUser(User updatedUser){
         User user = userDao.getUser(updatedUser.getId());
-        if(user == null){
+        User user1 = userDao.getUserByName(updatedUser.getUserName());
+        if(user == null && user1 == null){
             return null;
         }
 
+        if(user == null && user1 != null){
+            user = user1;
+        }
+
         if(updatedUser.getUserName() != null){user.setUserName(updatedUser.getUserName());}
-        if(updatedUser.getPassword() != null){user.setPassword(updatedUser.getPassword());}
+        if(updatedUser.getPassword() != null){
+            StrongPasswordEncryptor encryptor = new StrongPasswordEncryptor();
+            String encryptedPass = encryptor.encryptPassword(updatedUser.getPassword());
+            user.setPassword(encryptedPass);
+        }
         if(updatedUser.getFirstName() != null){user.setFirstName(updatedUser.getFirstName());}
         if(updatedUser.getLastName() != null){user.setLastName(updatedUser.getLastName());}
         if(updatedUser.getEmail() != null){user.setEmail(updatedUser.getEmail());}

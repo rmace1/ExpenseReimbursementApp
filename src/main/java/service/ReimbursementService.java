@@ -4,6 +4,12 @@ import dao.*;
 import models.*;
 import org.apache.log4j.Logger;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 
 public class ReimbursementService {
@@ -23,7 +29,34 @@ public class ReimbursementService {
         this.statusDao = statusDao;
     }
 
-    //TODO: description has 250 character limit
+    public byte[] toByteArray(File file){
+        byte[] b = null;
+        try {
+            b = Files.readAllBytes(file.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return b;
+    }
+
+    public File toImage(byte[] bytes){
+        ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+        BufferedImage bImage = null;
+        try {
+            bImage = ImageIO.read(bis);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            ImageIO.write(bImage, "jpeg", new File("output123.jpeg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        File fi = new File("output.jpeg");
+
+        return fi;
+    }
+
     public boolean createNewReimbursementTicket(Reimbursement newTicket){
         //needs to check if user/status/type id exist
         User user;
@@ -31,10 +64,27 @@ public class ReimbursementService {
         ReimbursementStatus status;
 
         user = userDao.getUser(newTicket.getAuthor());
-        type = typeDao.getType(newTicket.getTypeId());
-        status = statusDao.getStatusById(newTicket.getStatusId());
 
-        if(user == null || type == null || status == null){
+        if(newTicket.getTypeId() > 0) {
+            type = typeDao.getType(newTicket.getTypeId());
+        }else {
+            type = typeDao.getTypeByName(newTicket.getType());
+        }
+
+        if(newTicket.getTypeId() > 0) {
+            status = statusDao.getStatusById(newTicket.getStatusId());
+        }else {
+            status = statusDao.getStatusByName("PENDING");
+        }
+
+        try {
+            newTicket.setStatusId(status.getId());
+            newTicket.setStatus(status.getStatus());
+            newTicket.setTypeId(type.getId());
+        }catch (Exception e){
+
+        }
+        if(user == null || type == null){
             return false;
         }else {
             return reimbDao.createNewTicket(newTicket);
@@ -92,7 +142,7 @@ public class ReimbursementService {
     //todo: check if ticket is real
     public boolean approveTicket(int ticketId, int resolverId){
         User user = userDao.getUser(resolverId);
-        if(user != null && user.getRole() == "MANAGER") {
+        if(user != null && user.getRole().equals("MANAGER")) {
             log.info("Ticket: " + ticketId + " approved by userID: " + resolverId);
             return reimbDao.approveTicket(ticketId, resolverId);
         }else{
@@ -104,7 +154,7 @@ public class ReimbursementService {
     //todo: check if ticket is real
     public boolean denyTicket(int ticketId, int resolverId){
         User user = userDao.getUser(resolverId);
-        if(user != null && user.getRole() == "MANAGER") {
+        if(user != null && user.getRole().equals("MANAGER")) {
             log.info("Ticket: " + ticketId + " denied by userID: " + resolverId);
             return reimbDao.denyTicket(ticketId, resolverId);
         }else{

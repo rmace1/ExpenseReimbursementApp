@@ -41,6 +41,7 @@ class UserDaoTest {
     void getUser() {
         User user = new User(1,"rmace", "password","richard", "mace"
                 ,"rmace@revnet.net", 1);
+        user.setRole("EMPLOYEE");
         boolean created = userDao.createUser(user);
 
         User user2 = userDao.getUser(1);
@@ -63,9 +64,12 @@ class UserDaoTest {
     void updateUser() {
         User user = new User(1,"rmace", "password","richard", "mace"
                 ,"rmace@revnet.net", 1);
+        user.setRole("EMPLOYEE");
         boolean created = userDao.createUser(user);
         User updatedUser = new User(1,"rmace", "password","richard", "mace"
                 ,"rmace@revature.net", 1);
+        updatedUser.setRole("EMPLOYEE");
+
         User resultUser = userDao.updateUser(updatedUser);
 
         assertEquals(updatedUser.toString(), resultUser.toString());
@@ -85,8 +89,8 @@ class UserDaoTest {
         List<User> actualUsers = userDao.getAllUsers();
 
         //the order returned is ascending by ID so the list order will be reversed
-        assertEquals(users.get(0).toString(), actualUsers.get(1).toString());
-        assertEquals(users.get(1).toString(), actualUsers.get(0).toString());
+          assertEquals(users.get(0).toString(), actualUsers.get(0).toString());
+        assertEquals(users.get(1).toString(), actualUsers.get(1).toString());
         assertEquals(users.size(), actualUsers.size());
 
     }

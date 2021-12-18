@@ -16,14 +16,35 @@ public class Reimbursement {
     private Timestamp resolved;
     private String description;
     private byte[] reciept;
+    private File file;
     private int author; //required
+    private String authorName;
+    private String submittedDate;
+    private String resolvedDate;
+
+
     private int resolver;
+    private String resolverName;
     private int statusId; //required
     private String status;
     private int typeId; //required
     private String type;
 
+    public String getSubmittedDate() {
+        return submittedDate;
+    }
 
+    public void setSubmittedDate(String submittedDate) {
+        this.submittedDate = submittedDate;
+    }
+
+    public String getResolvedDate() {
+        return resolvedDate;
+    }
+
+    public void setResolvedDate(String resolvedDate) {
+        this.resolvedDate = resolvedDate;
+    }
 
     public Reimbursement() {
     }
@@ -100,6 +121,10 @@ public class Reimbursement {
         this.reciept = reciept;
     }
 
+    public File getFile() {return file;}
+
+    public void setFile(File file) {this.file = file;}
+
     public int getAuthor() {
         return author;
     }
@@ -132,33 +157,13 @@ public class Reimbursement {
         this.typeId = typeId;
     }
 
-    public byte[] toByteArray(File file){
-        byte[] b = null;
-        try {
-            b = Files.readAllBytes(file.toPath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return b;
-    }
+    public String getAuthorName() {return authorName;}
 
-    public File toImage(byte[] bytes){
-        ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-        BufferedImage bImage = null;
-        try {
-            bImage = ImageIO.read(bis);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        /*try {
-            //ImageIO.write(bImage, "jpeg", new File("output.jpeg"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-        File fi = new File("output.jpeg");
+    public void setAuthorName(String authorName) {this.authorName = authorName;}
 
-        return fi;
-    }
+    public String getResolverName() {return resolverName;}
+
+    public void setResolverName(String resolverName) {this.resolverName = resolverName;}
 
     public String getStatus() {
         return status;

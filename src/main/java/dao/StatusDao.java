@@ -76,6 +76,27 @@ public class StatusDao implements StatusDaoInterface {
         return status;
     }
 
+    public ReimbursementStatus getStatusByName(String statusName){
+        ReimbursementStatus status = null;
+        try(Connection conn = DriverManager.getConnection(url, userName, password)){
+            String sql = "SELECT * FROM ers_reimbursement_status WHERE reimb_status = ?;";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, statusName);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                status = new ReimbursementStatus(rs.getInt(1), rs.getString(2));
+            }
+            log.info("Status retrieved.");
+            return status;
+        }catch(Exception e){
+            log.error(e);
+        }
+        return status;
+    }
+
+
     @Override
     public List<ReimbursementStatus> getAllStatuses() {
         List<ReimbursementStatus> statuses = new ArrayList<>();

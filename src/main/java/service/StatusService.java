@@ -24,6 +24,7 @@ public class StatusService {
         return statusDao.getStatusById(statusId);
     }
 
+    public ReimbursementStatus getStatusByName(String status){return statusDao.getStatusByName(status);}
 
     public List<ReimbursementStatus> getAllStatuses() {
         return statusDao.getAllStatuses();

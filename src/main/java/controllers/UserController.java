@@ -8,6 +8,7 @@ import models.ReimbursementStatus;
 import models.User;
 import org.apache.log4j.Logger;
 import service.UserService;
+import util.Email;
 
 import java.util.List;
 
@@ -169,5 +170,24 @@ public class UserController {
 
         context.contentType("application/json");
         context.result(JsonConverter.convertToJson(jsonResponse));
+    }
+
+    public void resetPasswordForUser(Context context) {
+        String userName = context.formParam("userName");
+        User user = new User();
+        user.setUserName(userName);
+
+        user.setPassword("password123");
+
+        User employee = userService.updateUser(user);
+
+        Boolean reset = false;
+        if(employee != null){
+            reset = Email.sendEmail(employee.getEmail(), "Password rest",
+                    "Your password has been reset to: \"password123\"");
+        }
+
+        JsonResponse jsonResponse = new JsonResponse(employee, "Reset email sent.", reset);
+        context.status(200).result(JsonConverter.convertToJson(jsonResponse));
     }
 }

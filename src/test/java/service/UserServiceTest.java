@@ -93,6 +93,7 @@ class UserServiceTest {
     void updateUser() {
         User updatedUser = new User(1,"rmace", "password","Ricard", "Mase"
                 ,"rmase@revnet.net", 1);
+        Mockito.when(userDao.getUser(updatedUser.getId())).thenReturn(updatedUser);
         Mockito.when(userDao.updateUser(updatedUser)).thenReturn(updatedUser);
 
         User actualUser = userService.updateUser(updatedUser);

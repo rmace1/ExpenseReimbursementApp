@@ -73,10 +73,12 @@ class ReimbursementServiceTest {
     void createInvalidNewReimbursementTicketStatus() {
         Timestamp ts = new Timestamp(0);
         Reimbursement ticket = new Reimbursement(1, 5.00, ts, 1, 1, 1);
-
-        Mockito.when(userDao.getUser(ticket.getAuthor())).thenReturn(new User(1, "rmace", "password", "richard", "mace",
-                "rmace@revnet.net", 1));
-        Mockito.when(typeDao.getType(ticket.getTypeId())).thenReturn(new ReimbursementType(1, "LODGING"));
+        User user = new User(1, "rmace", "password", "richard", "mace",
+                "rmace@revnet.net", 1);
+        ReimbursementStatus status = new ReimbursementStatus(1, "PENDING");
+        Mockito.when(userDao.getUser(ticket.getAuthor())).thenReturn(user);
+        //Mockito.when(typeDao.getType(ticket.getTypeId())).thenReturn(new ReimbursementType(1, "LODGING"));
+        //Mockito.when(statusDao.getStatusById(ticket.getStatusId())).thenReturn(status);
         //Mockito.when(statusDao.getStatus(ticket.getStatusId())).thenReturn(new ReimbursementStatus(1, "APPROVED"));
         //Mockito.when(reimbDao.createNewTicket(ticket)).thenReturn(true);
 
