@@ -30,7 +30,7 @@ class ReimbursementDaoTest {
 
         boolean created = typeDao.createType("LODGING");
          created = statusDao.createStatus("PENDING");
-         created = roleDao.createRole("Peasant");
+         created = roleDao.createRole("EMPLOYEE");
          created = userDao.createUser(new User(1, "rmace", "password", "richard", "mace",
                 "rmace@revnet.net", 1));
         Timestamp ts = new Timestamp(0);

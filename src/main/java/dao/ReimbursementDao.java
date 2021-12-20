@@ -101,7 +101,7 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                Reimbursement reimbursement = new Reimbursement(rs.getInt(1), rs.getInt(2),
+                Reimbursement reimbursement = new Reimbursement(rs.getInt(1), rs.getDouble(2),
                         rs.getTimestamp(3), rs.getTimestamp(4),
                         rs.getString(5), rs.getBytes(6),
                         rs.getInt(7), rs.getInt(8),
@@ -148,7 +148,7 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
 
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                Reimbursement reimbursement = new Reimbursement(rs.getInt(1), rs.getInt(2),
+                Reimbursement reimbursement = new Reimbursement(rs.getInt(1), rs.getDouble(2),
                         rs.getTimestamp(3), rs.getTimestamp(4),
                         rs.getString(5), rs.getBytes(6),
                         rs.getInt(7), rs.getInt(8),
@@ -193,7 +193,7 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
 
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                Reimbursement reimbursement = new Reimbursement(rs.getInt(1), rs.getInt(2),
+                Reimbursement reimbursement = new Reimbursement(rs.getInt(1), rs.getDouble(2),
                         rs.getTimestamp(3), rs.getTimestamp(4),
                         rs.getString(5), rs.getBytes(6),
                         rs.getInt(7), rs.getInt(8),
@@ -239,7 +239,7 @@ public class ReimbursementDao implements ReimbursementDaoInterface{
 
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                Reimbursement reimbursement = new Reimbursement(rs.getInt(1), rs.getInt(2),
+                Reimbursement reimbursement = new Reimbursement(rs.getInt(1), rs.getDouble(2),
                         rs.getTimestamp(3), rs.getTimestamp(4),
                         rs.getString(5), rs.getBytes(6),
                         rs.getInt(7), rs.getInt(8),

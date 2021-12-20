@@ -46,7 +46,7 @@ public class H2Util {
             String sql = "CREATE TABLE IF NOT EXISTS ers_users (\n" +
                     "ERS_USERS_ID SERIAL PRIMARY KEY,\n" +
                     "ERS_USERNAME VARCHAR(50) NOT NULL UNIQUE,\n" +
-                    "ERS_PASSWORD VARCHAR(50) NOT NULL,\n" +
+                    "ERS_PASSWORD VARCHAR(100) NOT NULL,\n" +
                     "USER_FIRST_NAME VARCHAR(100) NOT NULL,\n" +
                     "USER_LAST_NAME VARCHAR(100) NOT NULL,\n" +
                     "USER_EMAIL VARCHAR(100) NOT NULL UNIQUE,\n" +

@@ -39,6 +39,8 @@ class ReimbursementServiceTest {
         Mockito.when(reimbDao.createNewTicket(ticket)).thenReturn(true);
 
         assertTrue(reimbService.createNewReimbursementTicket(ticket));
+        Mockito.verify(reimbDao, Mockito.times(1)).createNewTicket(ticket);
+
     }
 
     @Test

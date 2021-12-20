@@ -21,8 +21,6 @@ public class Reimbursement {
     private String authorName;
     private String submittedDate;
     private String resolvedDate;
-
-
     private int resolver;
     private String resolverName;
     private int statusId; //required
