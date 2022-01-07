@@ -18,7 +18,7 @@ The Expense Reimbursement App will manage the process of reimbursing employees f
 
 ## Getting Started
 To clone the repository:
-git clone https://github.com/rmace1/Project1
+git clone https://github.com/rmace1/ExpenseReimbursementApp
 
 ## Usage
 To use locally clone the repository and utilize in any Java IDE desired.
